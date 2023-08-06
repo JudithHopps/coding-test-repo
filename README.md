@@ -11,7 +11,7 @@ This is a auto push repository for Baekjoon Online Judge created with [BaekjoonH
 
 ## 스터디 규칙
 - 평일 5문제, 주간 공통 문제 1개 (주간 최소 6문제)
-- 평일 1회는 미리 양해 구한 후에 빠질 수 있지만, 주당 개수는 채워야 함)
+- 평일 1회는 미리 양해 구한 후에 빠질 수 있지만, 주당 개수는 채워야 함
 - 주말 1시간 내외 정보 공유
 - 보증금 1만원, 벌금 1천원
 
