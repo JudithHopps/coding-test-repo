@@ -6,6 +6,8 @@ This is a auto push repository for Baekjoon Online Judge created with [BaekjoonH
 - @JudithHopps : https://github.com/JudithHopps/coding-test-repo
 - @kimJaeHoon : https://github.com/halmokme/LeetCode
 - @SooYoungJi : https://github.com/SooYoungJi/coding_study
+- @heydoy : https://github.com/heydoy
+- @leeks9653 : https://github.com/leeks9653
 
 # 스터디 규칙
 - 평일 5문제, 주간 공통 문제 1개 (주간 최소 6문제)
