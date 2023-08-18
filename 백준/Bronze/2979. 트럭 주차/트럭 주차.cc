@@ -18,19 +18,9 @@ int main()
         }
         for (int i = 0; i < 100; i++)
         {
-                if (result[i] == 1)
-                {
-                        sum += a;
-                }
-                else if (result[i] == 2)
-                {
-                        sum += b * 2;
-                }
-                else if (result[i] == 3)
-                {
-                        sum += c * 3;
-                }
+            sum += a * (result[i] == 1) + b * 2 * (result[i] == 2) + c * 3 * (result[i] == 3);
         }
+
         cout << sum << "\n";
 
         return 0;
