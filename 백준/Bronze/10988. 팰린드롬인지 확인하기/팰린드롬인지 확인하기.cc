@@ -7,9 +7,7 @@ int main() {
     cin >> str;
     temp = str;
     reverse(temp.begin(),temp.end());
-    
-    if(temp == str) cout << 1 << "\n";
-    else cout << 0 << "\n";
-        
+    cout << (str==temp) << "";
+   
     return 0;
 }
