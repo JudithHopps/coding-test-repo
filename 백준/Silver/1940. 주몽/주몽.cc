@@ -1,24 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n,m,a[15004],ret;
+int n, m, a[15004], ret;
 
-int main() {
-    cin >> n >> m;
-    for (int i=0;i<n;i++){
-        cin >> a[i];
+int main()
+{
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+  cin >> n >> m;
+  for (int i = 0; i < n; i++)
+  {
+    cin >> a[i];
+  }
+
+  for (int i = 0; i < n; i++)
+  {
+    for (int j = i + 1; j < n; j++)
+    {
+      if (a[i] + a[j] == m)
+        ret++;
     }
-    
-    if (m > 100,000 *2 ) cout << 0 << "\n";
-    else {
-        
-    
-    for (int i=0; i<n-1; i++){
-        for (int j=i+1;j<n; j++){
-            if (a[i] + a[j] == m) ret++;
-        }
-    }
-    
-    cout << ret << "\n";
-    }
-    return 0;
+  }
+  cout << ret << "\n";
+  return 0;
 }
