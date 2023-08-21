@@ -3,18 +3,17 @@ using namespace std;
 typedef long long ll;
 ll a, b, c;
 
-ll go(ll a, ll b, ll c)
+ll go(ll n, ll d)
 {
-  if (b == 1)
-    return a % c;
+  if (d == 1)
+    return (n * d) % c;
 
-  ll ret = go(a, b / 2, c);
-
+  ll ret = go(n, d / 2);
   ret = (ret * ret) % c;
-
-  if (b % 2)
-    ret = (ret * a) % c;
-
+  if (d % 2)
+  {
+    ret = ret * a % c;
+  }
   return ret;
 }
 
@@ -25,7 +24,7 @@ int main()
   cout.tie(NULL);
 
   cin >> a >> b >> c;
-  cout << go(a, b, c) << "\n";
+  cout << go(a, b) << "\n";
 
   return 0;
 }
