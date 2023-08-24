@@ -1,31 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, a, b, visited[10004], ret[10004], mx;
-vector<int> v[10004];
+int n, m, ret[10004], visited[10004], a, b, mx;
+vector<int> adj[10004];
 
 int dfs(int here)
 {
-  visited[here] = 1;
-  int ret = 1;
-  for (int there : v[here])
-  {
-    if (visited[there])
-      continue;
-    ret += dfs(there);
-  }
-  return ret;
-}
 
+  int sum = 1;
+  visited[here] = 1;
+  for (int there : adj[here])
+  {
+    if (!visited[there])
+    {
+      sum += dfs(there);
+    }
+  }
+  return sum;
+}
 int main()
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
   cin >> n >> m;
   while (m--)
   {
     cin >> a >> b;
-    v[b].push_back(a);
+    adj[b].push_back(a);
   }
-
   for (int i = 1; i <= n; i++)
   {
     fill(&visited[0], &visited[0] + 10004, 0);
@@ -38,5 +41,6 @@ int main()
     if (ret[i] == mx)
       cout << i << " ";
   }
+
   return 0;
 }
