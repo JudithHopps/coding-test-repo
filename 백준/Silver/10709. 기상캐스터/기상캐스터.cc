@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int h, w, cur, a[104][104], ret[104][104];
-
-string s;
+int h, w, pre;
+string str;
 
 int main()
 {
@@ -13,35 +12,27 @@ int main()
   cin >> h >> w;
   for (int i = 0; i < h; i++)
   {
-
-    cin >> s;
-    cur = 0;
+    cin >> str;
+    pre = 0;
     for (int j = 0; j < w; j++)
     {
-      a[i][j] = s[j];
-      // cout << a[i][j] << " ";
-
-      if (a[i][j] == 97 + 2)
+      char b = str[j];
+      if (b == 'c')
       {
-        ret[i][j] = 0;
-        cur = j + 1;
+        cout << 0 << " ";
+        pre = j + 1;
       }
-      else if (cur == 0)
-        ret[i][j] = -1;
-      else
+      else if (pre)
       {
-        ret[i][j] = j - cur + 1;
+        cout << j - pre + 1 << " ";
       }
-    }
-  }
-
-  for (int i = 0; i < h; i++)
-  {
-    for (int j = 0; j < w; j++)
-    {
-      cout << ret[i][j] << " ";
+      else if (pre == 0)
+      {
+        cout << -1 << " ";
+      }
     }
     cout << "\n";
-  }
+    }
+
   return 0;
 }
