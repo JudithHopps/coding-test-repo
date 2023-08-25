@@ -12,16 +12,13 @@ int main()
   while (t--)
   {
     cin >> n;
-    int cnt2 = 0, cnt5 = 0;
-    for (int i = 2; i <= n; i *= 2)
+    int sum5 = 0;
+
+    for (int i = 5; i <= n; i *= 5)
     {
-      cnt2 += n / i;
+      sum5 += n / i;
     }
-    for (int j = 5; j <= n; j *= 5)
-    {
-      cnt5 += n / j;
-    }
-    cout << min(cnt2, cnt5) << "\n";
+    cout << sum5 << "\n";
   }
 
   return 0;
