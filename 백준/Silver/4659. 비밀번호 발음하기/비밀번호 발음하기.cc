@@ -1,46 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
 string str;
-string ok = "> is acceptable.";
-string no = "> is not acceptable.";
-vector<char> a = {'a', 'e', 'i', 'o', 'u'};
-string test(string s)
+string ok = "> is acceptable.", no = "> is not acceptable.";
+char pre;
+bool isVower(char idx)
 {
-  int cntA = 0, cntB = 0, sumA = 0;
-  char pre;
-  for (char c : s)
+  return (idx == 'a' || idx == 'e' || idx == 'i' || idx == 'o' || idx == 'u');
+}
+
+string ch(string s)
+{
+  int v = 0, cnt = 0, ret = 0;
   {
-    if (find(a.begin(), a.end(), c) != a.end())
-    {
-      cntA++;
-      sumA++;
-      if (cntA == 3)
-      {
-        return no;
-      }
-      cntB = 0;
-    }
 
-    else
+    for (char c : s)
     {
-      cntB++;
-      if (cntB == 3)
+      if (isVower(c))
+      {
+
+        v++;
+        ret++;
+        cnt = 0;
+        if (v == 3)
+          return no;
+      }
+      else
+      {
+        v = 0;
+        cnt++;
+        if (cnt == 3)
+          return no;
+      }
+
+      if (pre == c && (c != 'e' && c != 'o'))
       {
         return no;
       }
-      cntA = 0;
+      pre = c;
     }
-    if (pre == c)
-    {
-      if (pre == 'e' || pre == 'o')
-        continue;
-      return no;
-    }
-    // cout << "    p :" << pre << "   c : " << c << "  sumA : " << sumA << "\n";
-    pre = c;
   }
-
-  return sumA >= 1 ? ok : no;
+  if (ret)
+    return ok;
+  return no;
 }
 
 int main()
@@ -54,8 +55,8 @@ int main()
     cin >> str;
     if (str == "end")
       break;
-    cout << "<" << str << test(str) << "\n";
+    pre = '-';
+    cout << "<" << str << ch(str) << "\n";
   }
-
   return 0;
 }
