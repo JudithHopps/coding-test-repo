@@ -1,21 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, c;
-map<int, int> mp, mp2;
-vector<pair<int, int>> v;
+int n, c, temp;
+map<int, int> mp, order;
+vector<int> v;
 
-bool ch(pair<int, int> a, pair<int, int> b)
+bool ch(int a, int b)
 {
-  if (a.second == b.second)
+  if (mp[a] == mp[b])
   {
-    return mp2[a.first] < mp2[b.first];
+    return order[a] < order[b];
   }
-  else
-  {
-    return a.second > b.second;
-  }
-}
 
+  return mp[a] > mp[b];
+}
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -23,28 +20,23 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> c;
+
   for (int i = 0; i < n; i++)
   {
-    int temp;
     cin >> temp;
+    if (mp[temp] == 0)
+      order[temp] = i;
     mp[temp]++;
-    if (mp2[temp] == 0)
-      mp2[temp] = i + 1;
-  }
-
-  for (auto it : mp)
-  {
-    v.push_back({it.first, it.second});
+    v.push_back(temp);
   }
 
   sort(v.begin(), v.end(), ch);
 
-  for (auto it : v)
+  for (int i : v)
   {
-    for (int i = 0; i < it.second; i++)
-    {
-      cout << it.first << " ";
-    }
+    cout << i << " ";
   }
+  cout << "\n";
+
   return 0;
 }
