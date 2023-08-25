@@ -1,43 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 string str, ret;
-string ok = "yes";
-string no = "no";
 
-bool ch(string a)
+string go(string str)
 {
   stack<char> st;
-  for (char c : a)
+  ret = "";
+  for (char c : str)
   {
     if (c == '(')
       st.push(c);
-    if (c == ')')
+    else if (c == ')')
     {
-      if (st.empty() || st.top() != '(')
-        return false;
-      st.pop();
+      if (st.size() && st.top() == '(')
+        st.pop();
+      else
+      {
+        return "no";
+      }
     }
-
-    if (c == '[')
+    else if (c == '[')
       st.push(c);
-    if (c == ']')
+    else if (c == ']')
     {
-      if (st.empty() || st.top() != '[')
-        return false;
-      st.pop();
+      if (st.size() && st.top() == '[')
+      {
+        st.pop();
+      }
+      else
+      {
+        return "no";
+      }
     }
   }
-  return st.empty();
+  if (ret == "" && st.size() == 0)
+    return "yes";
+  else
+    return "no";
 }
 int main()
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
   while (true)
   {
     getline(cin, str);
     if (str == ".")
       break;
-    ret = ch(str) ? ok : no;
-    cout << ret << "\n";
+
+    cout << go(str) << "\n";
   }
 
   return 0;
