@@ -1,23 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, r, temp, root;
+int n, t, root, ret, d;
 vector<int> adj[54];
 
-int dfs(int here)
+int go(int a)
 {
-  int ret = 0;
-  int child = 0;
-  for (int there : adj[here])
+  int cnt = 0, child = 0;
+  for (int n : adj[a])
   {
-    // cout << "T" << there << " ";
-    if (there == r)
+    if (n == d)
       continue;
-    ret += dfs(there);
     child++;
+    cnt += go(n);
   }
   if (child == 0)
     return 1;
-  return ret;
+
+  return cnt;
 }
 
 int main()
@@ -25,26 +24,26 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
+
   cin >> n;
   for (int i = 0; i < n; i++)
   {
-    cin >> temp;
-    if (temp == -1)
-      root = i; // root는 0
+    cin >> t;
+    if (t == -1)
+      root = i;
     else
     {
-
-      adj[temp].push_back(i);
+      adj[t].push_back(i);
     }
   }
 
-  cin >> r;
-  if (r == root)
+  cin >> d;
+  if (d == root)
+    ret = 0;
+  else
   {
-    cout << 0 << "\n";
-    return 0;
+    ret = go(root);
   }
-
-  cout << dfs(root) << "\n";
+  cout << ret << "\n";
   return 0;
 }
