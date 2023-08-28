@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-int visited[54][54], a[54][54], n, r, l, sum, cnt;
-const int dy[] = {0, 0, -1, 1};
-const int dx[] = {-1, 1, 0, 0};
+int n, r, l, a[54][54], visited[54][54], cnt, sum;
 vector<pair<int, int>> v;
+int dy[] = {0, 0, -1, 1};
+int dx[] = {-1, 1, 0, 0};
 
 void dfs(int y, int x, vector<pair<int, int>> &v)
 {
+  visited[y][x] = 1;
   for (int i = 0; i < 4; i++)
   {
     int ny = y + dy[i];
@@ -15,14 +16,11 @@ void dfs(int y, int x, vector<pair<int, int>> &v)
       continue;
     if (abs(a[ny][nx] - a[y][x]) >= l && abs(a[ny][nx] - a[y][x]) <= r)
     {
-      visited[ny][nx] = 1;
       v.push_back({ny, nx});
       sum += a[ny][nx];
       dfs(ny, nx, v);
     }
   }
-
-  return;
 }
 int main()
 {
@@ -51,24 +49,24 @@ int main()
       {
         if (!visited[i][j])
         {
+          sum = a[i][j];
           v.clear();
           v.push_back({i, j});
-          visited[i][j] = 1;
-          sum = a[i][j];
 
           dfs(i, j, v);
 
-          if (v.size() == 1)
-            continue;
-
-          for (auto it : v)
+          if (v.size() > 1)
           {
-            a[it.first][it.second] = sum / v.size();
             flag = 1;
+            for (auto it : v)
+            {
+              a[it.first][it.second] = sum / v.size();
+            }
           }
         }
       }
     }
+
     if (!flag)
       break;
     cnt++;
