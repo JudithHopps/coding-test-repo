@@ -1,63 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
-int ret, r, w, visited[54][54];
-int dy[] = {0, 0, -1, 1};
-int dx[] = {-1, 1, 0, 0};
+int r, c, visited[54][54], ret;
 char a[54][54];
+vector<pair<int, int>> land;
+const int dy[] = {0, 0, -1, 1}, dx[] = {1, -1, 0, 0};
 
-void bfs(int y, int x)
+int bfs(int y, int x)
 {
   visited[y][x] = 1;
-
   queue<pair<int, int>> q;
   q.push({y, x});
 
+  int dist = 0;
+
   while (q.size())
   {
-    tie(y, x) = q.front();
+    int y = q.front().first;
+    int x = q.front().second;
     q.pop();
     for (int i = 0; i < 4; i++)
     {
       int ny = y + dy[i];
       int nx = x + dx[i];
-      if (ny < 0 || nx < 0 || ny >= r || nx >= w || visited[ny][nx] || a[ny][nx] == 'W')
-        continue;
-      q.push({ny, nx});
-      visited[ny][nx] = visited[y][x] + 1;
 
-      ret = max(ret, visited[ny][nx]);
+      if (ny < 0 || nx < 0 || ny >= r || nx >= c || visited[ny][nx] || a[ny][nx] == 'W')
+        continue;
+      visited[ny][nx] = visited[y][x] + 1;
+      dist = max(dist, visited[ny][nx]);
+      q.push({ny, nx});
     }
   }
-  return;
+  // cout << dist << "\n";
+  return dist;
 }
-
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
 
-  cin >> r >> w;
+  cin >> r >> c;
   for (int i = 0; i < r; i++)
   {
-    for (int j = 0; j < w; j++)
+    for (int j = 0; j < c; j++)
     {
       cin >> a[i][j];
-    }
-  }
-
-  for (int i = 0; i < r; i++)
-  {
-    for (int j = 0; j < w; j++)
-    {
       if (a[i][j] == 'L')
       {
-        memset(visited, 0, sizeof(visited));
-        bfs(i, j);
+        land.push_back({i, j});
       }
     }
   }
 
+  for (auto it : land)
+  {
+    memset(visited, 0, sizeof(visited));
+
+    ret = max(ret, bfs(it.first, it.second));
+  }
   cout << ret - 1 << "\n";
 
   return 0;
