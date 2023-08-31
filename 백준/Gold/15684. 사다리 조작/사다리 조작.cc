@@ -1,33 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int INF = 987654321;
-int n, m, h, a, b, ret = INF, visited[34][34];
+
+int n, m, h, visited[34][34], ret = INF, a, b;
 
 bool check()
 {
   for (int i = 1; i <= n; i++)
   {
-    int start = i;
+    int ch = i;
     for (int j = 1; j <= h; j++)
     {
-      if (visited[j][start])
+      if (visited[j][ch])
       {
-
-        start++;
+        ch++;
       }
-      else if (visited[j][start - 1])
-        start--;
+      else if (visited[j][ch - 1])
+      {
+        ch--;
+      }
     }
-    if (start != i)
+    if (ch != i)
+    {
       return false;
+    }
   }
+
   return true;
 }
 void go(int here, int cnt)
 {
   if (cnt > 3 || cnt > ret)
     return;
-
   if (check())
   {
     ret = min(ret, cnt);
@@ -53,25 +57,15 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> m >> h;
-
   for (int i = 0; i < m; i++)
   {
     cin >> a >> b;
     visited[a][b] = 1;
   }
 
-  // for (int i = 0; i < n; i++)
-  // {
-  //   for (int j = 0; j < m; j++)
-  //   {
-  //     cout << visited[i][j] << " ";
-  //   }
-  //   cout << "\n";
-  // }
-
   go(1, 0);
 
-  cout << ((ret == INF) ? -1 : ret) << "\n";
+  cout << (ret == INF ? -1 : ret) << "\n";
 
   return 0;
 }
