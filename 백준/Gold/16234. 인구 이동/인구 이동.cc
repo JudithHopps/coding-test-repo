@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, r, l, a[54][54], visited[54][54], cnt, sum;
+int n, l, r, a[54][54], ret, visited[54][54], sum, cnt;
+const int dy[] = {0, 0, 1, -1}, dx[] = {1, -1, 0, 0};
+bool flag;
 vector<pair<int, int>> v;
-int dy[] = {0, 0, -1, 1};
-int dx[] = {-1, 1, 0, 0};
-
-void dfs(int y, int x, vector<pair<int, int>> &v)
+void dfs(int y, int x)
 {
   visited[y][x] = 1;
   for (int i = 0; i < 4; i++)
@@ -14,13 +13,16 @@ void dfs(int y, int x, vector<pair<int, int>> &v)
     int nx = x + dx[i];
     if (ny < 0 || nx < 0 || ny >= n || nx >= n || visited[ny][nx])
       continue;
-    if (abs(a[ny][nx] - a[y][x]) >= l && abs(a[ny][nx] - a[y][x]) <= r)
+    if (abs(a[y][x] - a[ny][nx]) >= l && abs(a[y][x] - a[ny][nx]) <= r)
     {
+      visited[ny][nx] = 1;
       v.push_back({ny, nx});
       sum += a[ny][nx];
-      dfs(ny, nx, v);
+      dfs(ny, nx);
     }
   }
+
+  return;
 }
 int main()
 {
@@ -29,7 +31,6 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> l >> r;
-
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
@@ -40,7 +41,7 @@ int main()
 
   while (true)
   {
-    bool flag = 0;
+    flag = false;
     memset(visited, 0, sizeof(visited));
 
     for (int i = 0; i < n; i++)
@@ -53,11 +54,11 @@ int main()
           v.clear();
           v.push_back({i, j});
 
-          dfs(i, j, v);
+          dfs(i, j);
 
           if (v.size() > 1)
           {
-            flag = 1;
+            flag = true;
             for (auto it : v)
             {
               a[it.first][it.second] = sum / v.size();
@@ -68,10 +69,12 @@ int main()
     }
 
     if (!flag)
+    {
       break;
-    cnt++;
+    }
+    ret++;
   }
 
-  cout << cnt << "\n";
+  cout << ret << "\n";
   return 0;
 }
