@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n, a[3], visited[64][64][64];
-vector<int> v = {1, 3, 9};
 vector<vector<int>> attack;
+vector<int> v = {1, 3, 9};
 
 struct A
 {
@@ -22,19 +22,17 @@ int bfs(int a, int b, int c)
     int c = q.front().c;
     q.pop();
 
-    for (int i = 0; i < attack.size(); i++)
+    for (auto at : attack)
     {
-      int na = max(0, a - attack[i][0]);
-      int nb = max(0, b - attack[i][1]);
-      int nc = max(0, c - attack[i][2]);
-
+      int na = max(0, a - at[0]);
+      int nb = max(0, b - at[1]);
+      int nc = max(0, c - at[2]);
       if (visited[na][nb][nc])
         continue;
       visited[na][nb][nc] = visited[a][b][c] + 1;
       q.push({na, nb, nc});
     }
   }
-
   return visited[0][0][0] - 1;
 }
 
