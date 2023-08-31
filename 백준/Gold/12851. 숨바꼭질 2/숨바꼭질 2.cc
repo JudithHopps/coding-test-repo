@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int MAX = 200000;
-
 int n, k, visited[MAX + 4], cnt[MAX + 4];
 
 int main()
@@ -11,6 +10,7 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> k;
+
   if (n == k)
   {
     cout << 0 << "\n"
@@ -20,8 +20,8 @@ int main()
 
   queue<int> q;
   visited[n] = 1;
+  q.push({n});
   cnt[n] = 1;
-  q.push(n);
 
   while (q.size())
   {
@@ -46,7 +46,7 @@ int main()
   }
 
   cout << visited[k] - 1 << "\n"
-       << cnt[k] << "\n";
+       << cnt[k];
 
   return 0;
 }
