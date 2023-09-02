@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int INF = 987654321;
-int n, a[24], ret = INF;
+int n, ret = INF, a[24];
 string s;
 
 void go(int start)
@@ -21,12 +21,14 @@ void go(int start)
       }
       sum += min(cnt, n - cnt);
     }
-    ret = min(ret, sum);
+    ret = min(sum, ret);
     return;
   }
 
   go(start + 1);
+
   a[start] = ~a[start];
+
   go(start + 1);
 }
 int main()
@@ -36,11 +38,12 @@ int main()
   cout.tie(NULL);
 
   cin >> n;
+
   for (int i = 0; i < n; i++)
   {
     cin >> s;
     int value = 1;
-    for (int j = n - 1; j >= 0; j--)
+    for (int j = 0; j < n; j++)
     {
       if (s[j] == 'T')
       {
@@ -48,11 +51,11 @@ int main()
       }
       value *= 2;
     }
-    // cout << a[i] << "\n";
   }
 
   go(0);
 
   cout << ret << "\n";
+
   return 0;
 }
