@@ -36,7 +36,6 @@ int main()
     {
       cin >> temp;
       adj[i].push_back(temp - 1);
-      adj[temp - 1].push_back(i);
     }
   }
   for (int i = 1; i < (1 << n) - 1; i++)
