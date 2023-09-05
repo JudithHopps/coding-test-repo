@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, a[8][8], ret;
+int n, m, a[4][4], ret;
 
 int main()
 {
@@ -22,7 +22,8 @@ int main()
       int cur = 0;
       for (int j = 0; j < m; j++)
       {
-        int k = i * m + j;
+        int k = m * i + j;
+
         if ((s & (1 << k)) == 0)
         {
           cur = cur * 10 + a[i][j];
@@ -33,7 +34,6 @@ int main()
           cur = 0;
         }
       }
-
       sum += cur;
     }
 
@@ -42,7 +42,8 @@ int main()
       int cur = 0;
       for (int i = 0; i < n; i++)
       {
-        int k = i * m + j;
+        int k = m * i + j;
+
         if ((s & (1 << k)) != 0)
         {
           cur = cur * 10 + a[i][j];
@@ -60,6 +61,5 @@ int main()
   }
 
   cout << ret << "\n";
-
   return 0;
 }
