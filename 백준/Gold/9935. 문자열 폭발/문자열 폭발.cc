@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 string str, del, ret;
+stack<char> st;
+
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -9,19 +11,42 @@ int main()
 
   cin >> str >> del;
 
-  for (int i = 0; i < str.length(); i++)
+  for (char c : str)
   {
-    ret += str[i];
-    if (ret.size() >= del.size() && ret.substr(ret.size() - del.size(), del.size()) == del)
+    st.push(c);
+    if (st.size() >= del.size() && st.top() == del[del.size() - 1])
     {
-      ret.erase(ret.end() - del.size(), ret.end());
+      string ss = "";
+      for (char d : del)
+      {
+        ss += st.top();
+        st.pop();
+      }
+      reverse(ss.begin(), ss.end());
+      if (ss != del)
+      {
+        for (char s : ss)
+        {
+          st.push(s);
+        }
+      }
     }
   }
 
-  if (!ret.size())
-    cout << "FRULA\n";
+  if (st.size() == 0)
+  {
+    cout << "FRULA"
+         << "\n";
+  }
   else
+  {
+    while (st.size())
+    {
+      ret += st.top();
+      st.pop();
+    }
+    reverse(ret.begin(), ret.end());
     cout << ret << "\n";
-
+  }
   return 0;
 }
