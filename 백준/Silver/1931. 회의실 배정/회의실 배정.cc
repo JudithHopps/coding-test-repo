@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, from, to;
+int n, from, to, ret;
 vector<pair<int, int>> v;
-priority_queue<int> pq;
 
 int main()
 {
@@ -16,8 +15,8 @@ int main()
     cin >> from >> to;
     v.push_back({to, from});
   }
-
   sort(v.begin(), v.end());
+
   from = v[0].second;
   to = v[0].first;
 
@@ -25,10 +24,10 @@ int main()
   {
     if (from <= it.second)
     {
-      pq.push(it.first);
-      from = pq.top();
+      ret++;
+      from = it.first;
     }
   }
-  cout << pq.size() << "\n";
+  cout << ret << "\n";
   return 0;
 }
