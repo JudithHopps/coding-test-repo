@@ -12,15 +12,13 @@ vector<A> v;
 vector<int> v_idx;
 vector<pair<int, int>> vv;
 
-void go(int y, int x, int first)
+void go(int y, int x)
 {
-  if (!first && y == sy && x == sx)
+  if (y == sy && x == ex)
     dir++;
-  if (!first && y == sy && x == ex)
+  if (y == ey && x == sx)
     dir++;
-  if (!first && y == ey && x == sx)
-    dir++;
-  if (!first && y == ey && x == ex)
+  if (y == ey && x == ex)
     dir++;
 
   int ny = y + dy[dir];
@@ -30,7 +28,7 @@ void go(int y, int x, int first)
 
   visited[ny][nx] = 1;
   vv.push_back({ny, nx});
-  go(ny, nx, 0);
+  go(ny, nx);
 }
 void rotateAll(int y, int x, int s)
 {
@@ -46,7 +44,7 @@ void rotateAll(int y, int x, int s)
 
     visited[sy][sx] = 1;
     vv.push_back({sy, sx});
-    go(sy, sx, 1);
+    go(sy, sx);
 
     vector<int> vvv;
     for (auto it : vv)
@@ -60,9 +58,8 @@ void rotateAll(int y, int x, int s)
     }
   }
 }
-int solve()
+void solve()
 {
-  int ret = INF;
   for (auto i : v_idx)
   {
     rotateAll(v[i].r, v[i].c, v[i].s);
@@ -76,7 +73,6 @@ int solve()
     }
     ret = min(sum, ret);
   }
-  return ret;
 }
 int main()
 {
@@ -104,7 +100,7 @@ int main()
   do
   {
     memcpy(b, a, sizeof(a));
-    ret = min(ret, solve());
+    solve();
   } while (next_permutation(v_idx.begin(), v_idx.end()));
 
   cout << ret << "\n";
