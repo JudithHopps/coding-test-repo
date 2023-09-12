@@ -13,12 +13,7 @@ struct A
   int y, x, s;
 };
 vector<A> v;
-bool cmp(A &a, A &b)
-{
-  if (a.y == b.y)
-    return a.x < b.x;
-  return a.y < b.y;
-}
+
 void go(int y, int x, int first)
 {
   if (!first && y == sy && x == sx)
