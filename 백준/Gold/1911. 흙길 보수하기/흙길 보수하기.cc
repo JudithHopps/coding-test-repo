@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-int n, l, ret, idx, b;
-
+int n, l, ret, b, idx;
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -15,11 +13,14 @@ int main()
   {
     cin >> v[i].first >> v[i].second;
   }
-   sort(v.begin(),v.end());
+
+  sort(v.begin(), v.end());
+
   for (int i = 0; i < n; i++)
   {
-    if (v[i].second <= idx)continue;
-    if (idx < v[i].first)
+    if (v[i].second <= idx)
+      continue;
+    if (v[i].first > idx)
     {
       b = (v[i].second - v[i].first) / l + ((v[i].second - v[i].first) % l ? 1 : 0);
       idx = v[i].first + b * l;
