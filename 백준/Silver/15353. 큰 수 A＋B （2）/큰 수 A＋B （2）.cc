@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int cur;
 string a, b, ret;
-
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -10,35 +8,23 @@ int main()
   cout.tie(NULL);
 
   cin >> a >> b;
-  int aLength = a.length() - 1;
-  int bLength = b.length() - 1;
-  int mx = max(aLength, bLength);
-  // cout << "\n"
-  //      << a[aLength] << "\n";
-
-  for (int i = 0; i <= mx; i++)
+  int sum = 0;
+  while (a.size() || b.size() || sum)
   {
-    cur = cur / 10;
-    // cout << cur << "\n";
-    if (aLength >= 0)
+    if (a.size())
     {
-      cur += a[aLength] - '0';
-      // cout << cur << "\n";
-      aLength--;
+      sum += a.back() - '0';
+      a.pop_back();
     }
-    if (bLength >= 0)
+    if (b.size())
     {
-      cur += b[bLength] - '0';
-      // cout << cur << "\n";
-      bLength--;
+      sum += b.back() - '0';
+      b.pop_back();
     }
-    ret += to_string(cur % 10);
+    ret += (sum % 10) + '0';
+    sum /= 10;
   }
-  if ((cur / 10) > 0)
-    ret += to_string(cur / 10);
-
   reverse(ret.begin(), ret.end());
   cout << ret << "\n";
-
   return 0;
 }
