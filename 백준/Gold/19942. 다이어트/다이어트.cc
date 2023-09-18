@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, k, sum = 987654321, a[20][10];
-vector<int> inge;
-map<int, vector<vector<int>>> mp;
-vector<vector<int>> ret;
+int n, a[4], ret = 987654321;
+struct A
+{
+  int dan, gi, tan, vi, price;
+};
+map<int, vector<vector<int>>> ans;
 
 int main()
 {
@@ -11,70 +13,47 @@ int main()
   cin.tie(NULL);
   cout.tie(NULL);
 
-  cin >> n;
-  int cnt = 4;
-  while (cnt--)
-  {
-    cin >> k;
-    inge.push_back(k);
-  }
-
+  cin >> n >> a[0] >> a[1] >> a[2] >> a[3];
+  vector<A> v(n);
   for (int i = 0; i < n; i++)
   {
-    for (int j = 0; j < 5; j++)
-    {
-      cin >> a[i][j];
-    }
+    cin >> v[i].dan >> v[i].gi >> v[i].tan >> v[i].vi >> v[i].price;
   }
 
-  for (int i = 0; i < (1 << n); i++)
+  for (int i = 1; i < (1 << n); i++)
   {
-    int price = 0;
-    int material[4] = {0, 0, 0, 0};
-    vector<int> v;
-
+    A temp = {0, 0, 0, 0};
+    vector<int> tempV;
     for (int j = 0; j < n; j++)
     {
       if (i & (1 << j))
       {
-        for (int p = 0; p < 4; p++)
-        {
-          material[p] += a[j][p];
-        }
-        price += a[j][4];
-        v.push_back(j + 1);
+        tempV.push_back(j + 1);
+        temp.dan += v[j].dan, temp.gi += v[j].gi;
+        temp.tan += v[j].tan, temp.vi += v[j].vi, temp.price += v[j].price;
       }
     }
-    // cout << i << "  price : " << price << "   " << material[0] << "\n";
-    bool flag = true;
-    for (int k = 0; k < 4; k++)
+
+    if (temp.dan >= a[0] && temp.gi >= a[1] && temp.tan >= a[2] && temp.vi >= a[3])
     {
-      if (material[k] < inge[k])
-      {
-        flag = false;
-        break;
-      }
-    }
-    if (flag)
-    {
-      sum = min(sum, price);
-      mp[price].push_back(v);
+      ret = min(ret, temp.price);
+      ans[temp.price].push_back(tempV);
     }
   }
 
-  if (sum == 987654321)
+  if (ret != 987654321)
+  {
+
+    sort(ans[ret].begin(), ans[ret].end());
+    cout << ret << "\n";
+    for (int a : ans[ret][0])
+    {
+      cout << a << " ";
+    }
+  }
+  else
   {
     cout << -1 << "\n";
-    return 0;
-  }
-
-  cout << sum << "\n";
-
-  sort(mp[sum].begin(), mp[sum].end());
-
-  for (int i : mp[sum][0])
-  {
-    cout << i << " ";
   }
 
   return 0;
