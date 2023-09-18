@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, a[4][4], ret;
+int n, m, ret, temp, a[4][4];
 
 int main()
 {
   scanf("%d %d", &n, &m);
-
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < m; j++)
@@ -14,7 +13,7 @@ int main()
     }
   }
 
-  for (int s = 0; s < (1 << (n * m)); s++)
+  for (int k = 0; k < (1 << (n * m)); k++)
   {
     int sum = 0;
     for (int i = 0; i < n; i++)
@@ -22,9 +21,8 @@ int main()
       int cur = 0;
       for (int j = 0; j < m; j++)
       {
-        int k = m * i + j;
-
-        if ((s & (1 << k)) == 0)
+        int x = m * i + j;
+        if ((k & (1 << x)) == 0)
         {
           cur = cur * 10 + a[i][j];
         }
@@ -42,9 +40,8 @@ int main()
       int cur = 0;
       for (int i = 0; i < n; i++)
       {
-        int k = m * i + j;
-
-        if ((s & (1 << k)) != 0)
+        int x = i * m + j;
+        if (k & (1 << x))
         {
           cur = cur * 10 + a[i][j];
         }
@@ -60,6 +57,6 @@ int main()
     ret = max(ret, sum);
   }
 
-  cout << ret << "\n";
+  printf("%d", ret);
   return 0;
 }
