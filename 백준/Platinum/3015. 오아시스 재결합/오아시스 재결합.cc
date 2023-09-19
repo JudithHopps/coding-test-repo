@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+ll n, temp, ret;
 stack<pair<ll, ll>> st;
-ll ret, n, temp;
 
 int main()
 {
@@ -28,13 +28,10 @@ int main()
       }
       st.pop();
     }
-
     if (st.size())
       ret++;
     st.push({temp, cnt});
   }
-
   cout << ret << "\n";
-
   return 0;
 }
