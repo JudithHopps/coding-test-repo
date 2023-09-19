@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, p, d, ret;
+int n, d, p, ret;
 vector<pair<int, int>> v;
 priority_queue<int, vector<int>, greater<int>> pq;
 
@@ -29,7 +29,6 @@ int main()
 
   while (pq.size())
   {
-
     ret += pq.top();
     pq.pop();
   }
