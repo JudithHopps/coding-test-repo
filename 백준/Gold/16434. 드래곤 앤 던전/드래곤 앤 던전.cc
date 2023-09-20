@@ -1,56 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll n, attack, t[123460], a[123460], h[123460], ret, lo = 1, hi = 1e18 + 4;
-
-bool ch(ll mid)
-{
-  ll maxH = mid;
-  ll at = attack;
-
-  for (int i = 0; i < n; i++)
-  {
-    if (t[i] == 1)
-    {
-      ll cnt = h[i] / at + (h[i] % at ? 1 : 0) - 1;
-      mid -= cnt * a[i];
-      if (mid <= 0)
-        return false;
-    }
-    else
-    {
-      at += a[i];
-      mid = min(maxH, mid + h[i]);
-    }
-  }
-  return true;
-}
+ll ret, n, attack, t, a, h, H, mxH, damage;
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-  cin >> n >> attack;
 
+  cin >> n >> attack;
   for (int i = 0; i < n; i++)
   {
-    cin >> t[i] >> a[i] >> h[i];
-  }
-
-  while (lo <= hi)
-  {
-    ll mid = (lo + hi) / 2;
-    if (ch(mid))
+    cin >> t >> a >> h;
+    if (t == 1)
     {
-      hi = mid - 1;
-      ret = mid;
+      damage = a * (ceil((double)h / attack) - 1);
+      if (H < damage)
+      {
+        mxH += damage - H;
+        H = 0;
+      }
+      else
+      {
+        H -= damage;
+      }
     }
     else
     {
-      lo = mid + 1;
+      attack += a;
+      H = min(mxH, H + h);
     }
   }
 
-  cout << ret << "\n";
+  cout << mxH + 1 << "\n";
+
   return 0;
 }
