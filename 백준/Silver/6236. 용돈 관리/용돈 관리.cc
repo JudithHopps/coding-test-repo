@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll n, m, ret = 10001, a[100004], l, h;
+ll n, m, a[100001], ret, l, h;
 
 bool ch(int mid)
 {
@@ -11,12 +11,11 @@ bool ch(int mid)
   {
     if (temp < a[i])
     {
-      sum++;
       temp = mid;
+      sum++;
     }
     temp -= a[i];
   }
-  // cout << "mid : " << mid << " sum : " << sum << "\n";
   return sum <= m;
 }
 int main()
@@ -24,30 +23,29 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-
   cin >> n >> m;
   for (int i = 0; i < n; i++)
   {
     cin >> a[i];
+    l = max(l, a[i]);
     h += a[i];
-    l = max(a[i], l);
   }
+
   while (l <= h)
   {
     int mid = (l + h) / 2;
     if (ch(mid))
     {
-      ret = mid;
       h = mid - 1;
+      ret = mid;
     }
     else
     {
       l = mid + 1;
     }
-
-    // cout << "l  : " << l << "  h :  " << h << "\n";
   }
 
   cout << ret << "\n";
+
   return 0;
 }
