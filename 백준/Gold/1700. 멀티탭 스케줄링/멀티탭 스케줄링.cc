@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 int n, k, a[104], visited[104], ret;
-vector<int> v;
 const int INF = 987654321;
+vector<int> v;
+
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -22,8 +22,7 @@ int main()
     {
       if (v.size() == n)
       {
-        int maxIdx = -1, del = -1;
-
+        int mxIdx = -1, del = -1;
         for (int vv : v)
         {
           int idx = INF;
@@ -35,22 +34,21 @@ int main()
               break;
             }
           }
-          if (idx > maxIdx)
+          if (mxIdx < idx)
           {
-            maxIdx = idx;
+            mxIdx = idx;
             del = vv;
           }
         }
-
-        visited[del] = 0;
         v.erase(find(v.begin(), v.end(), del));
+        visited[del] = 0;
         ret++;
       }
       v.push_back(a[i]);
       visited[a[i]] = 1;
     }
   }
-
   cout << ret << "\n";
+
   return 0;
 }
