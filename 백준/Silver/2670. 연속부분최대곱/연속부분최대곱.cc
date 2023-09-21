@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n;
-double psum[10001], a[10001], ret, b;
-
+double a[10004], temp, ret;
 int main()
 {
   cin >> n;
@@ -11,21 +10,21 @@ int main()
     cin >> a[i];
   }
 
-  double b = a[0];
-
-  for (int i = 1; i < n; i++)
+  for (int i = 0; i < n; i++)
   {
-    if (a[i] > b * a[i])
+    // cout << "ret  : " << ret << "  a[i] : " << a[i] << "\n";
+   
+    if (temp * a[i] < a[i])
     {
-      b = a[i];
+      temp = a[i];
     }
     else
     {
-      b *= a[i];
+      temp *= a[i];
     }
-    ret = max(b, ret);
+    ret = max(ret, temp);
   }
-  printf("%.3lf", ret );
 
+  printf("%.3lf", ret + 0.0000001);
   return 0;
 }
