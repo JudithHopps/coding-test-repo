@@ -1,21 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, k, ret, t;
+typedef long long ll;
+ll n, k, ret, t, dp[101][100001];
 #define time tttt
-vector<int> a[104];
-
-void go(int idx, int time, int sum)
+struct B
 {
-  if (time > k)
-    return;
-  if (idx == n)
+  int time, pay;
+};
+B a[101], b[101];
+
+ll go(int here, int time)
+{
+  if (here == n)
+    return 0;
+  ll &ret = dp[here][time];
+  if (ret)
+    return ret;
+  ret = -1e6;
+  if (time - a[here].tttt >= 0)
   {
-    ret = max(ret, sum);
-    return;
+    ret = max(ret, go(here + 1, time - a[here].tttt) + a[here].pay);
   }
-  go(idx + 1, time + a[idx][0], sum + a[idx][1]);
-  go(idx + 1, time + a[idx][2], sum + a[idx][3]);
-  return;
+  if (time - b[here].time >= 0)
+  {
+    ret = max(ret, go(here + 1, time - b[here].tttt) + b[here].pay);
+  }
+  return ret;
 }
 
 int main()
@@ -27,15 +37,10 @@ int main()
   cin >> n >> k;
   for (int i = 0; i < n; i++)
   {
-    for (int j = 0; j < 4; j++)
-    {
-      cin >> t;
-      a[i].push_back(t);
-    }
+    cin >> a[i].time >> a[i].pay >> b[i].time >> b[i].pay;
   }
 
-  go(0, 0, 0);
-  cout << ret << "\n";
+  cout << go(0, k) << "\n";
 
   return 0;
 }
