@@ -1,24 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, mx, a[100004], ret = 100001, l, h;
+const int INF = 987654321;
+int n, m, a[100004], ret = INF, lo = 1, hi, mx;
 
 bool ch(int mid)
 {
   if (mx > mid)
     return false;
-  int temp = mid, cnt = 0;
+  int cnt = 0, cur = 0;
   for (int i = 0; i < n; i++)
   {
-    if (temp - a[i] < 0)
+    if (mid >= cur + a[i])
     {
-      temp = mid;
-      cnt++;
+      cur += a[i];
     }
-    temp -= a[i];
+    else
+    {
+      cnt++;
+      cur = a[i];
+    }
   }
-  if (temp != mid)
+  if (cur > 0)
     cnt++;
-
   return cnt <= m;
 }
 int main()
@@ -28,30 +31,27 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> m;
-
   for (int i = 0; i < n; i++)
   {
     cin >> a[i];
-    h += a[i];
+    hi += a[i];
     mx = max(mx, a[i]);
   }
 
-  // cout << "l  : " << l << "  h  : " << h << "\n";
-
-  while (l <= h)
+  while (lo <= hi)
   {
-    int mid = (l + h) / 2;
+    int mid = (lo + hi) / 2;
+
     if (ch(mid))
     {
       ret = mid;
-      h = mid - 1;
+      hi = mid - 1;
     }
     else
-    {
-      l = mid + 1;
-    }
+      lo = mid + 1;
   }
 
   cout << ret << "\n";
+
   return 0;
 }
