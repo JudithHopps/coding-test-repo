@@ -1,41 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_N 1000004
-int n, dp[5][5][MAX_N], num;
+int a, n, dp[5][5][100004];
 vector<int> v;
 
-int ch(int from, int to)
+int move(int cur, int next)
 {
-  if (from == 0)
+  if (cur == 0)
     return 2;
-  if (from == to)
+  if (cur == next)
     return 1;
-  if (abs(from - to) == 2)
+  if (abs(cur - next) == 2)
     return 4;
   return 3;
 }
-int go(int y, int x, int cnt)
+int go(int x, int y, int cnt)
 {
-  if (cnt == num)
+  if (cnt == n)
   {
     return 0;
   }
-  if (dp[y][x][cnt] != -1)
-    return dp[y][x][cnt];
-  int right = go(v[cnt], x, cnt + 1) + ch(y, v[cnt]);
-  int left = go(y, v[cnt], cnt + 1) + ch(x, v[cnt]);
-  return dp[y][x][cnt] = min(right, left);
+  int &ret = dp[x][y][cnt];
+  if (ret != -1)
+    return ret;
+  int right = go(v[cnt], y, cnt + 1) + move(x, v[cnt]);
+  int left = go(x, v[cnt], cnt + 1) + move(y, v[cnt]);
+
+  return ret = min(right, left);
 }
 int main()
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
   while (true)
   {
-    scanf("%d", &n);
-    if (n == 0)
+    cin >> a;
+    if (a == 0)
       break;
-    v.push_back(n);
+    else
+      v.push_back(a);
   }
-  num = v.size();
+  n = v.size();
 
   memset(dp, -1, sizeof(dp));
 
