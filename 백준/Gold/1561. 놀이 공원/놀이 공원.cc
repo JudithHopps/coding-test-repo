@@ -1,17 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define maxN 60000000004
-#define maxM 10004
 typedef long long ll;
-ll n, m, a[maxM], lo, hi = maxN, ret, mid, temp;
+ll n, m, lo, hi = 60000000004, ret, temp, a[10004];
 
 bool ch(ll mid)
 {
-  temp = m;
+  ll sum = m;
   for (ll i = 0; i < m; i++)
-    temp += mid / a[i];
-  return temp >= n;
+  {
+    sum += mid / a[i];
+  }
+  return n <= sum;
 }
+
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -31,7 +32,7 @@ int main()
 
   while (lo <= hi)
   {
-    mid = (lo + hi) / (1LL * 2);
+    ll mid = (lo + hi) / 2;
     if (ch(mid))
     {
       ret = mid;
@@ -42,20 +43,23 @@ int main()
       lo = mid + 1;
     }
   }
+
+  // cout << ret << "\n";
+
   temp = m;
   for (ll i = 0; i < m; i++)
-  {
-    temp += (ret - 1) / a[i];
-  }
+    temp += ((ret - 1) / a[i]);
+
   for (ll i = 0; i < m; i++)
   {
     if (ret % a[i] == 0)
       temp++;
     if (temp == n)
     {
-      cout << i + 1 << "\n";
+      cout << i + 1 << '\n';
       return 0;
     }
   }
+
   return 0;
 }
