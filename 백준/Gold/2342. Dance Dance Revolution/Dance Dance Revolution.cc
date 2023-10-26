@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_N 1000001
-int dp[5][5][MAX_N], n;
+#define MAX_N 1000004
+int n, dp[5][5][MAX_N], num;
 vector<int> v;
 
-int check(int from, int to)
+int ch(int from, int to)
 {
-  // 처음 2
   if (from == 0)
     return 2;
   if (from == to)
@@ -15,32 +14,32 @@ int check(int from, int to)
     return 4;
   return 3;
 }
-int solve(int y, int x, int target)
+int go(int y, int x, int cnt)
 {
-  if (target == n)
+  if (cnt == num)
+  {
     return 0;
-  if (dp[y][x][target] != -1)
-    return dp[y][x][target];
-
-  int left = solve(v[target], x, target + 1) + check(y, v[target]);
-  int right = solve(y, v[target], target + 1) + check(x, v[target]);
-  return dp[y][x][target] = min(left, right);
+  }
+  if (dp[y][x][cnt] != -1)
+    return dp[y][x][cnt];
+  int right = go(v[cnt], x, cnt + 1) + ch(y, v[cnt]);
+  int left = go(y, v[cnt], cnt + 1) + ch(x, v[cnt]);
+  return dp[y][x][cnt] = min(right, left);
 }
-
 int main()
 {
-
   while (true)
   {
-    int num;
-    cin >> num;
-    if (num == 0)
+    scanf("%d", &n);
+    if (n == 0)
       break;
-    v.push_back(num);
+    v.push_back(n);
   }
+  num = v.size();
+
   memset(dp, -1, sizeof(dp));
-  n = v.size();
-  cout << solve(0, 0, 0) << "\n";
+
+  cout << go(0, 0, 0) << "\n";
 
   return 0;
 }
