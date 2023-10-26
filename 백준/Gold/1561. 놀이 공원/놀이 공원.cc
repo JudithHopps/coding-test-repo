@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll n, m, lo, hi = 60000000004, ret, temp, a[10004];
+ll n, m, lo, hi = 1e12, ret, temp, a[10004];
 
 bool ch(ll mid)
 {
