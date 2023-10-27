@@ -1,26 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n;
-double a[10004], temp, ret;
+double num, temp, ret;
 
 int main()
 {
 
-  cin >> n;
-  for (int i = 0; i < n; i++)
-  {
-    cin >> a[i];
-  }
+  scanf("%d", &n);
 
   for (int i = 0; i < n; i++)
   {
-    if (temp * a[i] < a[i])
+    cin >> num;
+    if (num * temp < num)
     {
-      temp = a[i];
+      temp = num;
     }
     else
     {
-      temp *= a[i];
+      temp *= num;
     }
     ret = max(ret, temp);
   }
