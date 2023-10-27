@@ -1,32 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define mx_N 1000004
 const int INF = 1e9 + 4;
-int n, num, lis[1000004], len;
-pair<int, int> ans[1000004];
+
+int n, num, lis[mx_N], len;
+stack<int> st;
+pair<int, int> ans[mx_N];
+
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
 
+  fill(lis, lis + mx_N, INF);
   cin >> n;
-  fill(lis, lis + n, INF);
+
   for (int i = 0; i < n; i++)
   {
     cin >> num;
     auto lower_pos = lower_bound(lis, lis + len, num);
     int pos = (int)(lower_pos - lis);
-    if (*lower_pos == INF)
-    {
+    if (lis[pos] == INF)
       len++;
-    }
-    *lower_pos = num;
+    lis[pos] = num;
     ans[i].first = pos;
     ans[i].second = num;
   }
-  stack<int> st;
+
   for (int i = n - 1; i >= 0; i--)
   {
+    // cout << ans[i].first << " , " << ans[i].second << "\n";
     if (ans[i].first == len - 1)
     {
       st.push(ans[i].second);
