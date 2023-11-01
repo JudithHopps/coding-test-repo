@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int INF = 987654321;
-int n, dp[16][1 << 16], w[16][16];
+int n, w[16][16], dp[16][1 << 16];
+const int INF = 98765432;
 
 int go(int here, int visited)
 {
@@ -12,11 +12,11 @@ int go(int here, int visited)
   int &ret = dp[here][visited];
   if (ret != -1)
     return ret;
-  ret = INF;
 
-  for (int i = 1; i < n; i++)
+  ret = INF;
+  for (int i = 0; i < n; i++)
   {
-    if (w[here][i] == 0 || visited & 1 << i)
+    if (w[here][i] == 0 || visited & (1 << i))
       continue;
     ret = min(ret, go(i, visited | 1 << i) + w[here][i]);
   }
@@ -32,9 +32,7 @@ int main()
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
-    {
       cin >> w[i][j];
-    }
   }
 
   memset(dp, -1, sizeof(dp));
