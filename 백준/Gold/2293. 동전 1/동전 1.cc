@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-ll ret, n, k, a[104], dp[10004];
-const int INF = 987654321;
+// 경우의 수 : 더하기!!
+int dp[10001], temp, n, k;
 
 int main()
 {
@@ -12,18 +11,15 @@ int main()
 
   cin >> n >> k;
   dp[0] = 1;
-
   for (int i = 0; i < n; i++)
   {
-    cin >> a[i];
-    if (a[i] >= 10001)
-      continue;
-    for (int j = a[i]; j <= k; j++)
+    cin >> temp;
+    for (int j = temp; j <= k; j++)
     {
-      dp[j] += dp[j - a[i]];
+      dp[j] += dp[j - temp];
     }
   }
-  cout << dp[k] << "\n";
 
+  cout << dp[k] << "\n";
   return 0;
 }
