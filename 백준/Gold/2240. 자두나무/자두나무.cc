@@ -1,20 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
-int t, w, ret, a[1004], dp[1004][2][34];
+int t, w, a[1004], dp[1004][2][34], cur = 1, ret;
 
-int go(int idx, int tree, int cnt)
+int go(int idx, int cur, int cnt)
 {
-  if (cnt < 0)
-    return -1e9;
   if (idx == t)
-    return cnt == 0 ? 0 : -1e9;
-  int &ret = dp[idx][tree][cnt];
+    return 0;
+
+  int &ret = dp[idx][cur][cnt];
   if (ret != -1)
-  {
-    // cout << "~ret : " << ~ret << "  ret : " << ret << " \n";
     return ret;
+  ret = 0;
+  int now = (cur == a[idx] ? 1 : 0);
+  if (cnt != w)
+  {
+    ret = max(ret, go(idx + 1, cur ^ 1, cnt + 1) + now);
   }
-  return ret = (max(go(idx + 1, tree ^ 1, cnt - 1), go(idx + 1, tree, cnt))) + (tree == a[idx] - 1);
+  ret = max(ret, go(idx + 1, cur, cnt) + now);
+
+  return ret;
 }
 int main()
 {
@@ -22,12 +26,15 @@ int main()
   cin.tie(NULL);
   cout.tie(NULL);
 
-  memset(dp, -1, sizeof(dp));
   cin >> t >> w;
   for (int i = 0; i < t; i++)
   {
     cin >> a[i];
+    a[i]--;
   }
-  cout << max(go(0, 1, w - 1), go(0, 0, w)) << "\n";
+
+  memset(dp, -1, sizeof(dp));
+  cout << max(go(0, 0, 0), go(0, 1, 1)) << "\n";
+
   return 0;
 }
