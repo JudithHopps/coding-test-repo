@@ -33,7 +33,7 @@ string go(string str)
       }
     }
   }
-  if (ret == "" && st.size() == 0)
+  if ( st.size() == 0)
     return "yes";
   else
     return "no";
