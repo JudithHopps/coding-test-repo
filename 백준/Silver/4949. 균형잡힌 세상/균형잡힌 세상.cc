@@ -5,10 +5,9 @@ string str, ret;
 string go(string str)
 {
   stack<char> st;
-  ret = "";
   for (char c : str)
   {
-    if (c == '(')
+    if (c == '(' || c=='[')
       st.push(c);
     else if (c == ')')
     {
@@ -19,8 +18,6 @@ string go(string str)
         return "no";
       }
     }
-    else if (c == '[')
-      st.push(c);
     else if (c == ']')
     {
       if (st.size() && st.top() == '[')
