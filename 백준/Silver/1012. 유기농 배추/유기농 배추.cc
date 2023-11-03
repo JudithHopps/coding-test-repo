@@ -1,59 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
-int t, m, n, k, a[54][54], visited[54][54];
-;
-int y, x, ny, nx, ret;
-const int dy[] = {-1, 1, 0, 0};
-const int dx[] = {0, 0, -1, 1};
+int t, n, m, k, y, x, visited[54][54], a[54][54], ret;
+const int dy[] = {0, 0, 1, -1}, dx[] = {1, -1, 0, 0};
 
+bool outside(int y, int x)
+{
+  if (y < 0 || x < 0 || y >= n || x >= m)
+    return true;
+  return false;
+}
 void dfs(int y, int x)
 {
+
   visited[y][x] = 1;
+
   for (int i = 0; i < 4; i++)
   {
     int ny = y + dy[i];
     int nx = x + dx[i];
-    if (ny < 0 || nx < 0 || ny > m || nx > n)
+    if (outside(ny, nx) || visited[ny][nx] || a[ny][nx] == 0)
       continue;
-    if (a[ny][nx] && !visited[ny][nx])
-    {
-      dfs(ny, nx);
-    }
+    dfs(ny, nx);
   }
+
+  return;
 }
 int main()
 {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
-
   cin >> t;
-
   while (t--)
   {
-    // 초기화 방법
-    fill(&a[0][0], &a[0][0] + 54 * 54, 0);
-    fill(&visited[0][0], &visited[0][0] + 54 * 54, 0);
+    memset(visited, 0, sizeof(visited));
+    memset(a, 0, sizeof(a));
     ret = 0;
+
     cin >> m >> n >> k;
     for (int i = 0; i < k; i++)
     {
-      cin >> y >> x;
-      a[y][x] = 1;
+      scanf("%d %d", &x, &y);
+      a[y][x] = 5;
     }
 
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < n; i++)
     {
-      for (int j = 0; j < n; j++)
+      for (int j = 0; j < m; j++)
       {
-        if (visited[i][j] == 0 && a[i][j])
+        if (!visited[i][j] && a[i][j] == 5)
         {
           ret++;
           dfs(i, j);
         }
       }
     }
+
     cout << ret << "\n";
   }
+
   return 0;
 }
