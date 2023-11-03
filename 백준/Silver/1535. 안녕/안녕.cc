@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, che[24], join[24], cur = 100, dp[104];
+int n, che[24], joy[24], dp[104];
 
 int main()
 {
@@ -15,14 +15,16 @@ int main()
   }
   for (int i = 0; i < n; i++)
   {
-    cin >> join[i];
+    cin >> joy[i];
   }
 
   for (int i = 0; i < n; i++)
   {
-    for (int j = 100; j > che[i]; j--)
+
+    for (int c = 100; c > che[i]; c--)
     {
-      dp[j] = max(dp[j], dp[j - che[i]] + join[i]);
+
+      dp[c] = max(dp[c], dp[c - che[i]] + joy[i]);
     }
   }
 
