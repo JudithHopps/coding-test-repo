@@ -1,39 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-string str, ret;
+string s;
 
-string go(string str)
+bool ch(string s)
 {
   stack<char> st;
-  for (char c : str)
+  for (char c : s)
   {
-    if (c == '(' || c=='[')
+    if (c == '(' || c == '[')
       st.push(c);
     else if (c == ')')
     {
       if (st.size() && st.top() == '(')
         st.pop();
       else
-      {
-        return "no";
-      }
+        return false;
     }
     else if (c == ']')
     {
       if (st.size() && st.top() == '[')
-      {
         st.pop();
-      }
       else
-      {
-        return "no";
-      }
+        return false;
     }
   }
-  if ( st.size() == 0)
-    return "yes";
-  else
-    return "no";
+
+  if (st.size() == 0)
+    return true;
+  return false;
 }
 int main()
 {
@@ -43,12 +37,13 @@ int main()
 
   while (true)
   {
-    getline(cin, str);
-    if (str == ".")
+    getline(cin, s);
+    if (s == ".")
       break;
-
-    cout << go(str) << "\n";
+    if (ch(s))
+      cout << "yes\n";
+    else
+      cout << "no\n";
   }
-
   return 0;
 }
