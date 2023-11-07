@@ -1,51 +1,64 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, w, px[1003], py[1003], dp[1004][1004], y, x;
+const int INF = 987654321;
+int n, w, x[1004], y[1004], dp[1004][1004];
 
-int d(int a, int b)
+int dist(int a, int b)
 {
-  return abs(px[a] - px[b]) + abs(py[a] - py[b]);
+  return abs(x[a] - x[b]) + abs(y[a] - y[b]);
 }
-
-int getSum(int a, int b)
+int go(int a, int b)
 {
   if (a == w + 1 || b == w + 1)
+  {
     return 0;
-  if (dp[a][b])
-    return dp[a][b];
+  }
+
+  int &ret = dp[a][b];
+  if (ret != INF)
+    return ret;
 
   int next = max(a, b) + 1;
-  return dp[a][b] = min(getSum(a, next) + d(b, next), getSum(next, b) + d(a, next));
+  return ret = min(go(next, b) + dist(a, next), go(a, next) + dist(b, next));
 }
-
-void solve()
+void print()
 {
   int a = 0, b = 1;
+
   for (int i = 2; i < w + 2; i++)
   {
-    if (dp[i][b] + d(a, i) < dp[a][i] + d(b, i))
-      puts("1"), a = i;
+    // cout << dp[a][b] << "   :  " << dp[i][b] + dist(a, i) << "   :   " << dp[a][i] + dist(b, i) << "\n";
+    if (dp[i][b] + dist(a, i) < dp[a][i] + dist(b, i))
+    {
+      cout << "1\n";
+      a = i;
+    }
     else
-      puts("2"), b = i;
+    {
+      cout << "2\n";
+      b = i;
+    }
   }
   return;
 }
-
 int main()
 {
-  scanf("%d %d", &n, &w);
-  px[0] = 1, py[0] = 1;
-  px[1] = n, py[1] = n;
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
+  cin >> n >> w;
+  x[0] = 1, y[0] = 1;
+  x[1] = n, y[1] = n;
+
+  fill(&dp[0][0], &dp[0][0] + 1004 * 1004, INF);
   for (int i = 2; i < w + 2; i++)
   {
-    scanf("%d %d", &y, &x);
-    px[i] = x, py[i] = y;
+    cin >> y[i] >> x[i];
   }
 
-  printf("%d\n", getSum(0, 1));
-
-  solve();
+  cout << go(0, 1) << "\n";
+  print();
 
   return 0;
 }
