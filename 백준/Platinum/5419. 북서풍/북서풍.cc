@@ -20,14 +20,10 @@ int sum(int idx)
 
 void update(int pos, int value)
 {
-  int idx = pos;
-  // cout << "\n"
-  //      << pos << "  :    ";
-  while (idx <= n)
+  while (pos <= n)
   {
-    tree[idx] += value;
-    idx += (idx & -idx);
-    // cout << idx << "   ";
+    tree[pos] += value;
+    pos += (pos & -pos);
   }
 
   return;
