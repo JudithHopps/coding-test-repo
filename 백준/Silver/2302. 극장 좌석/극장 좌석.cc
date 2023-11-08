@@ -1,28 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, vip, cur;
-long long dp[41];
-vector<int> v;
+int n, m, vip, cur, dp[41];
 
-void countSeatingArrangements(int n)
+void go(int n)
 {
   dp[0] = 1;
   dp[1] = 1;
-  dp[2] = 2;
 
-  for (int i = 3; i <= n; i++)
+  for (int i = 2; i <= n; i++)
   {
     dp[i] = dp[i - 1] + dp[i - 2];
   }
-
-  return;
 }
-
 int main()
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
   cin >> n >> m;
-  countSeatingArrangements(n);
+  go(n);
   int ret = 1;
 
   for (int i = 0; i < m; i++)
@@ -31,8 +28,10 @@ int main()
     ret *= dp[vip - cur - 1];
     cur = vip;
   }
+
   ret *= dp[n - cur];
 
   cout << ret << "\n";
+
   return 0;
 }
