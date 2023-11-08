@@ -32,7 +32,7 @@ void update(int pos, int value)
 
   return;
 }
-int find_index(vector<int> &y, int value)
+int find_index(int value)
 {
   int lo = 0, hi = y.size() - 1;
   while (lo <= hi)
@@ -73,11 +73,11 @@ int main()
     sort(y.begin(), y.end());
 
     ll ret = 0;
-    update(find_index(y, v[0].second) + 1, 1);
+    update(find_index(v[0].second) + 1, 1);
 
     for (int i = 1; i < n; i++)
     {
-      int idx = find_index(y, v[i].second) + 1;
+      int idx = find_index(v[i].second) + 1;
       ret += 1LL * sum(idx);
       update(idx, 1);
     }
