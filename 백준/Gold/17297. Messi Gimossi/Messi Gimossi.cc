@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int maxN = 39;
-int f[maxN] = {0, 5, 13}, m;
+const int n = 39;
+vector<int> v = {0, 5, 13};
+int m;
 string s = "Messi Gimossi";
 
 int main()
@@ -13,21 +14,25 @@ int main()
   cin >> m;
   m--;
 
-  for (int i = 3; i <= maxN; i++)
+  for (int i = 3; i <= n; i++)
   {
-    f[i] = f[i - 1] + f[i - 2] + 1;
+    v.push_back(v[i - 1] + v[i - 2] + 1);
   }
 
-  for (int i = maxN; i >= 2; i--)
+  for (int i = n; i >= 2; i--)
   {
-    if (m >= f[i])
-      m -= (f[i] + 1);
+    if (m >= v[i])
+      m -= (v[i] + 1);
   }
-  if (m == -1 || s[m] == ' ')
-    cout << "Messi Messi Gimossi"
-         << "\n";
+
+  if (m == -1 || m == 5)
+  {
+    cout << "Messi Messi Gimossi\n";
+  }
   else
+  {
     cout << s[m] << "\n";
+  }
 
   return 0;
 }
