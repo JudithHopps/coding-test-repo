@@ -12,7 +12,6 @@ void update(int idx, int val)
   }
   return;
 }
-
 int sum(int idx)
 {
   int ret = 0;
@@ -23,7 +22,6 @@ int sum(int idx)
   }
   return ret;
 }
-
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -37,11 +35,11 @@ int main()
     memset(tree, 0, sizeof(tree));
     mp.clear();
 
-    int update_idx = 100001;
+    int mx = 100001;
     for (int i = 1; i <= n; i++)
     {
-      update(i + update_idx, 1);
-      mp[i] = i + update_idx;
+      update(mx + i, 1);
+      mp[i] = mx + i;
     }
 
     for (int i = 0; i < m; i++)
@@ -49,10 +47,12 @@ int main()
       cin >> temp;
       int idx = mp[temp];
       cout << sum(idx) - 1 << " ";
+
       update(idx, -1);
-      update(--update_idx, 1);
-      mp[temp] = update_idx;
+      update(--mx, 1);
+      mp[temp] = mx;
     }
+
     cout << "\n";
   }
 
