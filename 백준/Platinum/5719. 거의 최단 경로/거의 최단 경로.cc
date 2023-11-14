@@ -23,10 +23,10 @@ void dijkstra()
     {
       if (a[here][i] == -1)
         continue;
-      int _dist = a[here][i];
-      if (dist[i] > dist[here] + _dist)
+      int d = a[here][i];
+      if (dist[i] > dist[here] + d)
       {
-        dist[i] = dist[here] + _dist;
+        dist[i] = dist[here] + d;
         pq.push({dist[i], i});
       }
     }
