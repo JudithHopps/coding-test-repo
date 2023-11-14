@@ -2,9 +2,9 @@
 using namespace std;
 int n, m, t, d, a[26][26], b[3000][3000];
 char c;
+const int INF = 987654321;
 const int dy[] = {0, 0, 1, -1};
 const int dx[] = {1, -1, 0, 0};
-const int INF = 987654321;
 vector<int> v;
 
 int main()
@@ -12,6 +12,8 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
+
+  fill(&b[0][0], &b[0][0] + 3000 * 3000, INF);
 
   cin >> n >> m >> t >> d;
 
@@ -28,10 +30,9 @@ int main()
       {
         a[i][j] = c - 'a' + 26;
       }
+      v.push_back(i * 100 + j);
     }
   }
-
-  fill(&b[0][0], &b[0][0] + 3000 * 3000, INF);
 
   for (int y = 0; y < n; y++)
   {
@@ -41,26 +42,23 @@ int main()
       {
         int ny = y + dy[i];
         int nx = x + dx[i];
+
         if (ny < 0 || nx < 0 || ny >= n || nx >= m)
           continue;
-        int diff = abs(a[y][x] - a[ny][nx]);
-        if (diff > t)
-          continue;
 
-        if (a[y][x] < a[ny][nx])
+        int diff = abs(a[ny][nx] - a[y][x]);
+        if (diff <= t)
         {
-          b[y * 100 + x][ny * 100 + nx] = diff * diff;
-        }
-        else
-        {
-          b[y * 100 + x][ny * 100 + nx] = 1;
+          if (a[y][x] < a[ny][nx])
+          {
+            b[y * 100 + x][ny * 100 + nx] = diff * diff;
+          }
+          else
+            b[y * 100 + x][ny * 100 + nx] = 1;
         }
       }
-
-      v.push_back(y * 100 + x);
     }
   }
-  int ret = a[0][0];
 
   for (int k : v)
   {
@@ -73,14 +71,13 @@ int main()
     }
   }
 
-  for (int i : v)
-  {
-    if (d >= b[0][i] + b[i][0])
-    {
-      ret = max(ret, a[i / 100][i % 100]);
-    }
-  }
+  int ret = a[0][0];
 
+  for (int k : v)
+  {
+    if (d >= b[0][k] + b[k][0])
+      ret = max(ret, a[k / 100][k % 100]);
+  }
   cout << ret << "\n";
 
   return 0;
