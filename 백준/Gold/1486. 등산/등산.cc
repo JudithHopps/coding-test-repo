@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int INF = 9874321;
-int n, m, T, D, a[30][30], b[3000][3000], ret;
-char temp[30][30];
-const int dy[] = {-1, 0, 1, 0};
-const int dx[] = {0, -1, 0, 1};
-vector<int> v;
+int n, m, t, d, a[26][26], b[3000][3000];
 char c;
+const int dy[] = {0, 0, 1, -1};
+const int dx[] = {1, -1, 0, 0};
+const int INF = 987654321;
+vector<int> v;
 
 int main()
 {
@@ -14,60 +13,54 @@ int main()
   cin.tie(NULL);
   cout.tie(NULL);
 
-  cin >> n >> m >> T >> D;
+  cin >> n >> m >> t >> d;
+
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < m; j++)
     {
       cin >> c;
-      if (c >= 'a')
-      {
-        a[i][j] = c - 'a' + 26;
-      }
-      else
+      if (c >= 'A' && c <= 'Z')
       {
         a[i][j] = c - 'A';
       }
-    }
-  }
-
-  ret = a[0][0];
-  for (int i = 0; i < n; i++)
-  {
-    for (int j = 0; j < m; j++)
-    {
-      v.push_back(i * 100 + j);
+      else
+      {
+        a[i][j] = c - 'a' + 26;
+      }
     }
   }
 
   fill(&b[0][0], &b[0][0] + 3000 * 3000, INF);
 
-  for (int i = 0; i < n; i++)
+  for (int y = 0; y < n; y++)
   {
-    for (int j = 0; j < m; j++)
+    for (int x = 0; x < m; x++)
     {
-      for (int d = 0; d < 4; d++)
+      for (int i = 0; i < 4; i++)
       {
-        int ny = i + dy[d];
-        int nx = j + dx[d];
-
-        if (ny < 0 || ny >= n || nx < 0 || nx >= m)
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+        if (ny < 0 || nx < 0 || ny >= n || nx >= m)
           continue;
-        int diff = abs(a[i][j] - a[ny][nx]);
-        if (diff <= T)
+        int diff = abs(a[y][x] - a[ny][nx]);
+        if (diff > t)
+          continue;
+
+        if (a[y][x] < a[ny][nx])
         {
-          if (a[i][j] < a[ny][nx])
-          {
-            b[i * 100 + j][ny * 100 + nx] = diff * diff;
-          }
-          else
-          {
-            b[i * 100 + j][ny * 100 + nx] = 1;
-          }
+          b[y * 100 + x][ny * 100 + nx] = diff * diff;
+        }
+        else
+        {
+          b[y * 100 + x][ny * 100 + nx] = 1;
         }
       }
+
+      v.push_back(y * 100 + x);
     }
   }
+  int ret = a[0][0];
 
   for (int k : v)
   {
@@ -80,11 +73,11 @@ int main()
     }
   }
 
-  for (int j : v)
+  for (int i : v)
   {
-    if (D >= b[0][j] + b[j][0])
+    if (d >= b[0][i] + b[i][0])
     {
-      ret = max(ret, a[j / 100][j % 100]);
+      ret = max(ret, a[i / 100][i % 100]);
     }
   }
 
