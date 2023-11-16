@@ -32,9 +32,13 @@ bool solution(vector<vector<int>> key, vector<vector<int>> lock) {
                         int ny = y + i;
                         int nx = x + j;
                         if(ny<0||nx<0||ny>=n||nx>=n) continue;
-                        if(lock[ny][nx] == 1 && key[y][x] == 1) flag = 1;
+                        if(lock[ny][nx] == 1 && key[y][x] == 1) {
+                            flag = 1;
+                            break;
+                        }
                         else if(lock[ny][nx] == 0 && key[y][x] == 1) cnt++;
                     }
+                    if(flag) break;
                 }
                 if(cnt==holl && !flag ) return true;
             }
