@@ -65,13 +65,13 @@ int main()
       break;
   }
 
-  if (dist[e] == INF)
-  {
-    cout << "gg\n";
-  }
-  else if (ok)
+  if (ok)
   {
     cout << "Gee\n";
+  }
+  else if (dist[e] == INF)
+  {
+    cout << "gg\n";
   }
   else
   {
