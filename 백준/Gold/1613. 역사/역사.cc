@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, k, s, e, a, b, c, dist[401][401], t;
-const int INF = 987654321;
-
+int n, k, a, b, s, dist[401][401];
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -23,8 +21,10 @@ int main()
       for (int j = 1; j <= n; j++)
       {
         if (dist[i][k] == 1 && dist[k][j] == 1)
+        {
           dist[i][j] = 1;
-        else if (dist[i][k] == -1 && dist[k][j] == -1)
+        }
+        if (dist[i][k] == -1 && dist[k][j] == -1)
         {
           dist[i][j] = -1;
         }
@@ -32,11 +32,12 @@ int main()
     }
   }
 
-  cin >> t;
-  for (int i = 0; i < t; i++)
+  cin >> s;
+  for (int i = 0; i < s; i++)
   {
-    cin >> s >> e;
-    cout << dist[s][e] << "\n";
+    cin >> a >> b;
+    cout << dist[a][b] << "\n";
   }
+
   return 0;
 }
