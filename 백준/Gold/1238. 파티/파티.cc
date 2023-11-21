@@ -1,11 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, x, a, b, c, ret;
+int n, m, x, a, b, c, ret, dist[1001], dist2[1001];
 priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-int dist[1001], dist2[1001];
-bool visited[1001];
-const int INF = 987654321;
 vector<pair<int, int>> adj[1001], adj2[1001];
+const int INF = 987654321;
 
 void dijkstra(int *dist, vector<pair<int, int>> *adj)
 {
@@ -25,6 +23,7 @@ void dijkstra(int *dist, vector<pair<int, int>> *adj)
     {
       int next = there.second;
       int d = there.first;
+
       if (dist[next] > dist[here] + d)
       {
         dist[next] = dist[here] + d;
@@ -32,6 +31,7 @@ void dijkstra(int *dist, vector<pair<int, int>> *adj)
       }
     }
   }
+  return;
 }
 int main()
 {
@@ -49,6 +49,7 @@ int main()
     adj[a].push_back({c, b});
     adj2[b].push_back({c, a});
   }
+
   dijkstra(dist, adj);
   dijkstra(dist2, adj2);
 
@@ -60,6 +61,5 @@ int main()
   }
 
   cout << ret << "\n";
-
   return 0;
 }
