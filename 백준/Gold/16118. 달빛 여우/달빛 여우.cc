@@ -1,16 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> PI;
 typedef tuple<int, int, bool> TI;
-int n, m, a, b, d, ret, here, cnt, dist[4001], dist_wolf[4001][2];
-vector<PI> adj[4001];
-const int INF = 987654321;
-
-void dikstraFox()
+struct A
 {
-  fill(dist, dist + 4001, INF);
-  priority_queue<PI, vector<PI>, greater<PI>> pq;
-  dist[1] = 0;
+  int dist, here, flag;
+};
+int n, m, a, b, d, dist_wolf[4001][2], dist_fox[4001], ret;
+vector<pair<int, int>> adj[4001];
+const int INF = 987654321;
+void dijkstra_fox()
+{
+  fill(dist_fox, dist_fox + 4001, INF);
+  priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+  dist_fox[1] = 0;
   pq.push({0, 1});
 
   while (pq.size())
@@ -19,70 +21,77 @@ void dikstraFox()
     int here_dist = pq.top().first;
     pq.pop();
 
-    if (here_dist != dist[here])
+    if (dist_fox[here] != here_dist)
       continue;
-    for (PI there : adj[here])
+
+    for (auto there : adj[here])
     {
-      int next = there.second;
-      int d = there.first;
-      if (dist[next] > dist[here] + d)
+      int next = there.first;
+      int d = there.second;
+      if (dist_fox[next] > dist_fox[here] + d)
       {
-        dist[next] = dist[here] + d;
-        pq.push({dist[next], next});
+        dist_fox[next] = dist_fox[here] + d;
+        pq.push({dist_fox[next], next});
       }
     }
   }
 }
 
-void dikstraWolf()
+void dijkstra_wolf()
 {
   fill(&dist_wolf[0][0], &dist_wolf[0][0] + 4001 * 2, INF);
-  priority_queue<TI, vector<TI>, greater<TI>> pq;
   dist_wolf[1][0] = 0;
+
+  priority_queue<TI, vector<TI>, greater<TI>> pq;
   pq.push({0, 1, 0});
 
   while (pq.size())
   {
-    int d, here, cnt;
-    tie(d, here, cnt) = pq.top();
+    int dist, here, flag;
+    tie(dist, here, flag) = pq.top();
     pq.pop();
 
-    if (dist_wolf[here][cnt] != d)
+    if (dist != dist_wolf[here][flag])
       continue;
 
-    for (PI there : adj[here])
+    for (auto there : adj[here])
     {
-      int next = there.second;
-      int d = !cnt ? there.first / 2 : there.first * 2;
-      if (dist_wolf[next][!cnt] > dist_wolf[here][cnt] + d)
+      int next = there.first;
+      int d = !flag ? there.second / 2 : there.second * 2;
+
+      if (dist_wolf[next][!flag] > dist_wolf[here][flag] + d)
       {
-        dist_wolf[next][!cnt] = dist_wolf[here][cnt] + d;
-        pq.push({dist_wolf[next][!cnt], next, !cnt});
+        dist_wolf[next][!flag] = dist_wolf[here][flag] + d;
+        pq.push({dist_wolf[next][!flag], next, !flag});
       }
     }
   }
 }
 int main()
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
-  scanf("%d %d", &n, &m);
+  cin >> n >> m;
   for (int i = 0; i < m; i++)
   {
-    scanf("%d %d %d", &a, &b, &d);
-    adj[a].push_back({d * 2, b});
-    adj[b].push_back({d * 2, a});
+    cin >> a >> b >> d;
+    adj[a].push_back({b, d * 2});
+    adj[b].push_back({a, d * 2});
   }
 
-  dikstraFox();
-  dikstraWolf();
+  dijkstra_fox();
+  dijkstra_wolf();
 
   for (int i = 2; i <= n; i++)
   {
     int d = min(dist_wolf[i][0], dist_wolf[i][1]);
-    if (d > dist[i])
+    if (d > dist_fox[i])
       ret++;
   }
-  printf("%d\n", ret);
+
+  cout << ret << "\n";
 
   return 0;
 }
