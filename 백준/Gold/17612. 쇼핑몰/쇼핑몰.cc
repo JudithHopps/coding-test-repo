@@ -5,7 +5,7 @@ int n, k, id, cost_time, time, idx;
 long long ret;
 struct Casher
 {
-  int id, maxTime, casher_id;
+  int id, maxTime, casher;
 };
 struct cmp
 {
@@ -13,18 +13,19 @@ struct cmp
   {
     if (a.maxTime == b.maxTime)
     {
-      return a.casher_id > b.casher_id;
+      return a.casher > b.casher;
     }
     return a.maxTime > b.maxTime;
   }
 };
 priority_queue<Casher, vector<Casher>, cmp> pq;
 vector<Casher> v;
-bool cmp2(Casher a, Casher b)
+
+bool cmp2(Casher &a, Casher &b)
 {
   if (a.maxTime == b.maxTime)
   {
-    return a.casher_id > b.casher_id;
+    return a.casher > b.casher;
   }
   return a.maxTime < b.maxTime;
 }
@@ -36,6 +37,7 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> k;
+
   for (int i = 0; i < n; i++)
   {
     cin >> id >> cost_time;
@@ -44,7 +46,7 @@ int main()
       pq.push({id, cost_time, i + 1});
       continue;
     }
-    pq.push({id, cost_time + pq.top().maxTime, pq.top().casher_id});
+    pq.push({id, cost_time + pq.top().maxTime, pq.top().casher});
     v.push_back(pq.top());
     pq.pop();
   }
@@ -54,12 +56,13 @@ int main()
     v.push_back(pq.top());
     pq.pop();
   }
+
   sort(v.begin(), v.end(), cmp2);
   for (int i = 1; i <= v.size(); i++)
   {
     ret += 1LL * i * v[i - 1].id;
   }
-  cout << ret << "\n";
 
+  cout << ret << "\n";
   return 0;
 }
