@@ -23,18 +23,19 @@ int main()
   {
     cin >> cost[i];
   }
-  fill(dist, dist + 104, INF);
+
+  fill(dist, dist + n, INF);
   dist[s] = cost[s];
 
   for (int i = 0; i < n; i++)
   {
     for (int here = 0; here < n; here++)
     {
-      for (pair<int, int> there : adj[here])
+      for (auto there : adj[here])
       {
-        int d = there.second;
         int next = there.first;
-        if (dist[here] != INF && dist[here] + cost[next] - d > dist[next])
+        int d = there.second;
+        if (dist[here] != INF && dist[next] < dist[here] + cost[next] - d)
         {
           dist[next] = dist[here] + cost[next] - d;
           if (i == n - 1)
@@ -48,17 +49,17 @@ int main()
   {
     int here = q.front();
     q.pop();
-    for (pair<int, int> th : adj[here])
+    for (pair<int, int> there : adj[here])
     {
-      if (th.first == e)
+      if (there.first == e)
       {
         ok = 1;
         break;
       }
-      if (!visited[th.first])
+      if (!visited[there.first])
       {
-        visited[th.first] = 1;
-        q.push(th.first);
+        visited[there.first] = 1;
+        q.push(there.first);
       }
     }
     if (ok)
@@ -66,9 +67,7 @@ int main()
   }
 
   if (ok)
-  {
     cout << "Gee\n";
-  }
   else if (dist[e] == INF)
   {
     cout << "gg\n";
