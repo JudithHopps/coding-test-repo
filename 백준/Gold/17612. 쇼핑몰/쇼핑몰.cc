@@ -18,17 +18,17 @@ struct cmp
     return a.maxTime > b.maxTime;
   }
 };
-priority_queue<Casher, vector<Casher>, cmp> pq;
-vector<Casher> v;
-
-bool cmp2(Casher &a, Casher &b)
+bool cmp2(Casher a, Casher b)
 {
   if (a.maxTime == b.maxTime)
   {
     return a.casher > b.casher;
   }
-  return a.maxTime < b.maxTime;
+  else
+    return a.maxTime < b.maxTime;
 }
+priority_queue<Casher, vector<Casher>, cmp> pq;
+vector<Casher> v;
 
 int main()
 {
@@ -37,7 +37,6 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> k;
-
   for (int i = 0; i < n; i++)
   {
     cin >> id >> cost_time;
@@ -56,13 +55,14 @@ int main()
     v.push_back(pq.top());
     pq.pop();
   }
-
   sort(v.begin(), v.end(), cmp2);
-  for (int i = 1; i <= v.size(); i++)
+
+  for (int i = 0; i < v.size(); i++)
   {
-    ret += 1LL * i * v[i - 1].id;
+    ret += 1LL * (i + 1) * v[i].id;
   }
 
   cout << ret << "\n";
+
   return 0;
 }
