@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, s, e, visited[104], candi[104], a, b, c, ok;
-vector<pair<int, int>> adj[104];
-long long dist[104], cost[104];
+int n, s, e, m, a, b, c, ok, visited[104];
+long long cost[104], dist[104];
 const long long INF = -1e18;
+vector<pair<int, int>> adj[104];
 queue<int> q;
-
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -50,7 +49,7 @@ int main()
   {
     int here = q.front();
     q.pop();
-    for (pair<int, int> there : adj[here])
+    for (auto there : adj[here])
     {
       int next = there.first;
       if (next == e)
@@ -71,7 +70,9 @@ int main()
   if (ok)
     cout << "Gee\n";
   else if (dist[e] == INF)
+  {
     cout << "gg\n";
+  }
   else
     cout << dist[e] << "\n";
   return 0;
