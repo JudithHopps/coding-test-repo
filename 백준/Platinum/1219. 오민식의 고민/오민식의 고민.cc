@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, s, e, m, visited[104], candi[104], a, b, c, ok;
+int n, m, s, e, visited[104], candi[104], a, b, c, ok;
 vector<pair<int, int>> adj[104];
 long long dist[104], cost[104];
 const long long INF = -1e18;
@@ -24,7 +24,7 @@ int main()
     cin >> cost[i];
   }
 
-  fill(dist, dist + n, INF);
+  fill(dist, dist + 104, INF);
   dist[s] = cost[s];
 
   for (int i = 0; i < n; i++)
@@ -35,6 +35,7 @@ int main()
       {
         int next = there.first;
         int d = there.second;
+
         if (dist[here] != INF && dist[next] < dist[here] + cost[next] - d)
         {
           dist[next] = dist[here] + cost[next] - d;
@@ -51,15 +52,16 @@ int main()
     q.pop();
     for (pair<int, int> there : adj[here])
     {
-      if (there.first == e)
+      int next = there.first;
+      if (next == e)
       {
         ok = 1;
         break;
       }
-      if (!visited[there.first])
+      if (!visited[next])
       {
-        visited[there.first] = 1;
-        q.push(there.first);
+        visited[next] = 1;
+        q.push(next);
       }
     }
     if (ok)
@@ -69,12 +71,8 @@ int main()
   if (ok)
     cout << "Gee\n";
   else if (dist[e] == INF)
-  {
     cout << "gg\n";
-  }
   else
-  {
     cout << dist[e] << "\n";
-  }
   return 0;
 }
