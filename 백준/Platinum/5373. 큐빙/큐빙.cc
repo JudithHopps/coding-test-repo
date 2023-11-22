@@ -20,9 +20,8 @@ int main()
   cout.tie(NULL);
 
   for (int i = 0; i < 6; i++)
-  {
     mp[dir[i]] = i;
-  }
+
   cin >> t;
   while (t--)
   {
