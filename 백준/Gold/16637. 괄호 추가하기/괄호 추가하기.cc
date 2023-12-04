@@ -1,56 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, ret = -987654321;
-string str;
-vector<int> num;
-vector<char> op;
+int n, ret = -987654321, a[20];
+char b[20];
 
-int oper(int a, char b, int c)
+int cal(int a, char b, int c)
 {
-  if (b == '+')
-    return a + c;
-  if (b == '-')
+    if (b == '+')
+        return a + c;
+    if (b == '*')
+        return a * c;
+
     return a - c;
-  else
-    return a * c;
 }
-
-void dfs(int idx, int sum)
+void go(int idx, int sum)
 {
-  if (idx == num.size() - 1)
-  {
-    ret = max(ret, sum);
+    if (idx >= n / 2)
+    {
+        ret = max(ret, sum);
+        return;
+    }
+
+    // 괄호 X
+    go(idx + 1, cal(sum, b[idx], a[idx + 1]));
+
+    // 괄호 O
+    int next = cal(a[idx + 1], b[idx + 1], a[idx + 2]);
+    go(idx + 2, cal(sum, b[idx], next));
+
     return;
-  }
-
-  dfs(idx + 1, oper(sum, op[idx], num[idx + 1]));
-
-  if (idx + 2 <= num.size() - 1)
-  {
-    int temp = oper(num[idx + 1], op[idx + 1], num[idx + 2]);
-    dfs(idx + 2, oper(sum, op[idx], temp));
-  }
 }
 int main()
 {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
-
-  cin >> n >> str;
-  for (int i = 0; i < n; i++)
-  {
-    if (i % 2)
-      op.push_back(str[i]);
-    else
+    scanf("%d", &n);
+    for (int i = 0; i < n / 2; i++)
     {
-      num.push_back(str[i] - '0');
+        scanf("%1d%c", &a[i], &b[i]);
+        // printf("%d %c \n", a[i], b[i]);
     }
-  }
+    scanf("%1d", &a[n / 2]);
+    // printf("%d\n", a[n / 2]);
 
-  dfs(0, num[0]);
+    go(0, a[0]);
+    printf("%d\n", ret);
 
-  cout << ret << "\n";
-
-  return 0;
+    return 0;
 }
