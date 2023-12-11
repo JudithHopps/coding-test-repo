@@ -1,81 +1,105 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, m, cnt, mx, big, a[54][54], visited[54][54], area[2504];
-const int dy[] = {0, -1, 0, 1};
-const int dx[] = {-1, 0, 1, 0};
-int dfs(int y, int x, int cnt)
+int n, m, a[54][54], cnt, mx, ret, visited[54][54], room[54];
+const int dy[] = {0, 0, 1, -1};
+const int dx[] = {1, -1, 0, 0};
+
+bool ch(int i, int val)
 {
-  if (visited[y][x])
-    return 0;
-  visited[y][x] = cnt;
-  int sum = 1;
-  for (int i = 0; i < 4; i++)
-  {
-    if (!(a[y][x] & (1 << i)))
+    if (i == 0 && (val & 4))
+        return true;
+    else if (i == 1 && (val & 1))
+        return true;
+    else if (i == 2 && (val & 8))
+        return true;
+    else if (i == 3 && (val & 2))
+        return true;
+    return false;
+}
+int dfs(int y, int x, int val)
+{
+    visited[y][x] = val;
+    int sum = 1;
+    for (int i = 0; i < 4; i++)
     {
-      int ny = y + dy[i];
-      int nx = x + dx[i];
-      sum += dfs(ny, nx, cnt);
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+
+        if (ny < 0 || nx < 0 || ny >= n || nx >= m)
+            continue;
+        if (visited[ny][nx])
+            continue;
+        if (ch(i, a[y][x]))
+        {
+            continue;
+        }
+        sum += dfs(ny, nx, val);
     }
-  }
-  return sum;
+    return sum;
 }
 int main()
 {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-  cin >> n >> m;
-  for (int i = 0; i < m; i++)
-  {
-    for (int j = 0; j < n; j++)
+    cin >> m >> n;
+    for (int i = 0; i < n; i++)
     {
-      cin >> a[i][j];
-    }
-  }
-
-  for (int i = 0; i < m; i++)
-  {
-    for (int j = 0; j < n; j++)
-    {
-      if (!visited[i][j])
-      {
-
-        cnt++;
-        area[cnt] = dfs(i, j, cnt);
-        mx = max(mx, area[cnt]);
-      }
-    }
-  }
-
-  for (int i = 0; i < m; i++)
-  {
-    for (int j = 0; j < n; j++)
-    {
-      if (i + 1 < m)
-      {
-        int a = visited[i][j];
-        int b = visited[i + 1][j];
-        if (a != b)
+        for (int j = 0; j < m; j++)
         {
-          big = max(big, area[a] + area[b]);
+            cin >> a[i][j];
         }
-      }
-      if (j + 1 < n)
-      {
-        int a = visited[i][j];
-        int b = visited[i][j + 1];
-        if (a != b)
-        {
-          big = max(big, area[a] + area[b]);
-        }
-      }
     }
-  }
 
-  cout << cnt << "\n"
-       << mx << "\n"
-       << big << "\n";
-  return 0;
+    int now = 1;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (!visited[i][j])
+            {
+                room[now] = dfs(i, j, now);
+                mx = max(mx, room[now]);
+                now++;
+            }
+        }
+    }
+
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < m; j++)
+    //     {
+    //         cout << visited[i][j] << " ";
+    //     }
+    //     cout << "\n";
+    // }
+
+    cout << now - 1 << "\n"
+         << mx << "\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (visited[i][j] != visited[i][j + 1])
+            {
+                ret = max(room[visited[i][j]] + room[visited[i][j + 1]], ret);
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (visited[i][j] != visited[i + 1][j])
+            {
+                ret = max(room[visited[i][j]] + room[visited[i + 1][j]], ret);
+            }
+        }
+    }
+
+    cout << ret << "\n";
+    return 0;
 }
