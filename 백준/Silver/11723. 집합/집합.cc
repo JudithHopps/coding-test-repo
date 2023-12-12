@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int m, num, cur;
-string str;
-
+int m, cur, a;
+string s;
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -10,37 +9,36 @@ int main()
   cout.tie(NULL);
 
   cin >> m;
-  for (int i = 0; i < m; i++)
+  while (m--)
   {
-    cin >> str;
-    if (str == "all")
+    cin >> s;
+    if (s == "add")
     {
-      num = (1 << 21) - 1;
+      cin >> a;
+      cur |= (1 << a);
     }
-    else if (str == "empty")
+    if (s == "check")
     {
-      num = 0;
+      cin >> a;
+      cout << ((cur & (1 << a)) ? 1 : 0) << "\n";
     }
-    else
+    if (s == "toggle")
     {
-      cin >> cur;
-
-      if (str == "add")
-      {
-        num |= (1 << cur);
-      }
-      else if (str == "check")
-      {
-        cout << (num & (1 << cur) ? 1 : 0) << "\n";
-      }
-      else if (str == "remove")
-      {
-        num &= ~(1 << cur);
-      }
-      else if (str == "toggle")
-      {
-        num ^= (1 << cur);
-      }
+      cin >> a;
+      cur ^= (1 << a);
+    }
+    if (s == "remove")
+    {
+      cin >> a;
+      cur &= ~(1 << a);
+    }
+    if (s == "all")
+    {
+      cur = (1 << 21) - 1;
+    }
+    if (s == "empty")
+    {
+      cur = 0;
     }
   }
 
