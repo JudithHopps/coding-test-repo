@@ -1,133 +1,143 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> pii;
-int r, c, t, a[54][54], temp[54][54], ret;
-vector<pii> v1, v2;
-bool flag = 1;
-int dy1[] = {0, -1, 0, 1};
-int dx1[] = {1, 0, -1, 0};
-int dy2[] = {0, 1, 0, -1};
-int dx2[] = {1, 0, -1, 0};
+int r, c, t, ret, a[104][104], temp[104][104], flag;
+const int dy1[] = {0, -1, 0, 1};
+const int dx1[] = {1, 0, -1, 0};
+const int dy2[] = {0, 1, 0, -1};
+const int dx2[] = {1, 0, -1, 0};
+vector<pair<int, int>> v1, v2;
 
-void chung(vector<pii> &v)
+void miseGo()
 {
-  for (int i = v.size() - 1; i > 0; i--)
-  {
-    a[v[i].first][v[i].second] = a[v[i - 1].first][v[i - 1].second];
-  }
-  a[v[0].first][v[0].second] = 0;
+    memset(temp, 0, sizeof(temp));
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            if (a[i][j] <= 0)
+                continue;
+            int mise = a[i][j] / 5;
+            for (int k = 0; k < 4; k++)
+            {
+                int ny = i + dy1[k];
+                int nx = j + dx1[k];
+                if (ny < 0 || nx < 0 || ny >= r || nx >= c)
+                    continue;
+                if (a[ny][nx] == -1)
+                    continue;
+                temp[i][j] -= mise;
+                temp[ny][nx] += mise;
+            }
+        }
+    }
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            if (a[i][j] == -1)
+                continue;
+            a[i][j] = max(a[i][j] + temp[i][j], 0);
+            // cout << a[i][j] << " ";
+        }
+        // cout << "\n";
+    }
+    return;
 }
 
-void mise()
+void clearArr(int i, int j, const int dy[], const int dx[], vector<pair<int, int>> &v)
 {
-  queue<pii> q;
-  memset(temp, 0, sizeof(temp));
+    int y = i, x = j + 1;
+    int k = 0;
 
-  for (int i = 0; i < r; i++)
-  {
-    for (int j = 0; j < c; j++)
+    while (!(y == i && x == j))
     {
-      if (a[i][j] > 0)
-      {
-        q.push({i, j});
-      }
-    }
-  }
+        v.push_back({y, x});
+        int ny = y + dy[k];
+        int nx = x + dx[k];
 
-  while (q.size())
-  {
-    int y = q.front().first;
-    int x = q.front().second;
-    q.pop();
-    int exp = a[y][x] / 5;
-
-    for (int i = 0; i < 4; i++)
-    {
-      int ny = y + dy1[i];
-      int nx = x + dx1[i];
-      if (ny < 0 || nx < 0 || ny >= r || nx >= c || a[ny][nx] == -1)
-        continue;
-      temp[ny][nx] += exp;
-      a[y][x] -= exp;
+        if (ny < 0 || nx < 0 || ny >= r || nx >= c)
+        {
+            k++;
+            ny = y + dy[k];
+            nx = x + dx[k];
+        }
+        y = ny, x = nx;
     }
-  }
-  for (int i = 0; i < r; i++)
-  {
-    for (int j = 0; j < c; j++)
-    {
-      a[i][j] += temp[i][j];
-    }
-  }
 }
 
-vector<pii> chungArea(int y, int x, int dy[], int dx[])
+void clearAir()
 {
-  int sy = y, sx = x;
-  int i = 0;
-  vector<pii> v;
-
-  while (true)
-  {
-    int ny = y + dy[i];
-    int nx = x + dx[i];
-    if (ny == sy && nx == sx)
-      break;
-    if (ny < 0 || nx < 0 || ny >= r || nx >= c)
+    vector<int> v;
+    for (auto it : v1)
     {
-      i++;
-      ny = y + dy[i];
-      nx = x + dx[i];
+        v.push_back(a[it.first][it.second]);
     }
-    if (ny == sy && nx == sx)
-      break;
-    y = ny, x = nx;
-    v.push_back({ny, nx});
-  }
-  return v;
+    a[v1[0].first][v1[0].second] = 0;
+    for (int i = 1; i < v1.size(); i++)
+    {
+        a[v1[i].first][v1[i].second] = v[i - 1];
+    }
+
+    v.clear();
+    for (auto it : v2)
+    {
+        v.push_back(a[it.first][it.second]);
+    }
+    a[v2[0].first][v2[0].second] = 0;
+    for (int i = 1; i < v2.size(); i++)
+    {
+        a[v2[i].first][v2[i].second] = v[i - 1];
+    }
 }
 
 int main()
 {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-  cin >> r >> c >> t;
-  for (int i = 0; i < r; i++)
-  {
-    for (int j = 0; j < c; j++)
+    cin >> r >> c >> t;
+    for (int i = 0; i < r; i++)
     {
-      cin >> a[i][j];
-      if (a[i][j] == -1)
-      {
-        if (flag)
+        for (int j = 0; j < c; j++)
         {
-          v1 = chungArea(i, j, dy1, dx1);
-          flag = 0;
+            cin >> a[i][j];
+            if (a[i][j] == -1 && flag)
+            {
+                clearArr(i, j, dy2, dx2, v2);
+            }
+            if (a[i][j] == -1 && !flag)
+            {
+                flag = 1;
+                clearArr(i, j, dy1, dx1, v1);
+            }
         }
-        else
-        {
-          v2 = chungArea(i, j, dy2, dx2);
-        }
-      }
     }
-  }
 
-  while (t--)
-  {
-    mise();
-    chung(v1);
-    chung(v2);
-  }
-
-  for (int i = 0; i < r; i++)
-  {
-    for (int j = 0; j < c; j++)
+    // for (auto it : v2)
+    // {
+    //     cout << it.first << " , " << it.second << " \n";
+    // }
+    while (t--)
     {
-      if (a[i][j] != -1)
-        ret += a[i][j];
+        miseGo();
+        clearAir();
     }
-  }
-  cout << ret << "\n";
-  return 0;
+
+    for (int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            if (a[i][j] > 0)
+            {
+                ret += a[i][j];
+            }
+        }
+    }
+
+    cout << ret << "\n";
+
+    return 0;
 }
