@@ -1,23 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int INF = 987654321;
-int s[24][24], ret = INF, n;
+int n, s[24][24], ret = INF;
 
-int go(vector<int> &a, vector<int> &b)
-{
-  pair<int, int> ret;
-  for (int i = 0; i < n / 2; i++)
-  {
-    for (int j = 0; j < n / 2; j++)
-    {
-      if (i == j)
-        continue;
-      ret.first += s[a[i]][a[j]];
-      ret.second += s[b[i]][b[j]];
-    }
-  }
-  return abs(ret.first - ret.second);
-}
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -33,19 +18,36 @@ int main()
     }
   }
 
-  for (int i = 0; i < (1 << n); i++)
+  for (int i = 1; i < (1 << n); i++)
   {
     if (__builtin_popcount(i) != n / 2)
       continue;
-    vector<int> start, link;
+    vector<int> A, B;
     for (int j = 0; j < n; j++)
     {
       if (i & (1 << j))
-        start.push_back(j);
+      {
+        A.push_back(j);
+      }
       else
-        link.push_back(j);
+      {
+        B.push_back(j);
+      }
     }
-    ret = min(ret, go(start, link));
+    int asum = 0, bsum = 0;
+    for (int i = 0; i < n / 2; i++)
+    {
+      for (int j = 0; j < n / 2; j++)
+      {
+        if (i == j)
+          continue;
+        asum += s[A[i]][A[j]];
+        bsum += s[B[i]][B[j]];
+      }
+    }
+    ret = min(ret, abs(asum - bsum));
+    if (ret == 0)
+      break;
   }
 
   cout << ret << "\n";
