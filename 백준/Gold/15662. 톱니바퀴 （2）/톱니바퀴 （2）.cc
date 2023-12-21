@@ -1,39 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-int n, k, a, b, ret;
+int t, n, a, b, ret;
 string s[1004];
 
 void rot(int pos, int dir)
 {
-  if (!dir)
-    rotate(s[pos].begin(), s[pos].begin() + 1, s[pos].end());
+  if (dir)
+  {
+    rotate(s[pos].begin(), s[pos].end() - 1, s[pos].end());
+  }
   else
-    rotate(s[pos].begin(), s[pos].begin() + s[pos].size() - 1, s[pos].end());
+  {
+    rotate(s[pos].begin(), s[pos].begin() + 1, s[pos].end());
+  }
+  return;
 }
-
 int findL(int pos)
 {
-  for (int i = pos; i >= 1; i--)
+  for (int i = pos; i > 0; i--)
   {
     if (s[i][6] == s[i - 1][2])
-    {
       return i;
-    }
   }
   return 0;
 }
 
 int findR(int pos)
 {
-  for (int i = pos; i <= n - 2; i++)
+  for (int i = pos; i < t - 1; i++)
   {
     if (s[i][2] == s[i + 1][6])
-    {
       return i;
-    }
   }
-  return n - 1;
+  return t - 1;
 }
 
 int main()
@@ -42,35 +41,36 @@ int main()
   cin.tie(NULL);
   cout.tie(NULL);
 
-  cin >> n;
-  for (int i = 0; i < n; i++)
+  cin >> t;
+  for (int i = 0; i < t; i++)
   {
     cin >> s[i];
   }
-  cin >> k;
-
-  for (int i = 0; i < k; i++)
+  cin >> n;
+  for (int i = 0; i < n; i++)
   {
     cin >> a >> b;
     a--;
-    b = (b == -1 ? 0 : 1);
+    b = (b == 1 ? 1 : 0);
+    int dir = b;
+
     int l = findL(a);
     int r = findR(a);
-    int cnt = 0;
-    for (int pos = a; pos >= l; pos--)
+
+    for (int i = a; i >= l; i--)
     {
-      rot(pos, cnt % 2 == 0 ? b : !b);
-      cnt++;
+      rot(i, dir);
+      dir ^= 1;
     }
-    cnt = 1;
-    for (int pos = a + 1; pos <= r; pos++)
+    dir = b ^ 1;
+    for (int i = a + 1; i <= r; i++)
     {
-      rot(pos, cnt % 2 == 0 ? b : !b);
-      cnt++;
+      rot(i, dir);
+      dir ^= 1;
     }
   }
 
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < t; i++)
   {
     if (s[i][0] == '1')
       ret++;
