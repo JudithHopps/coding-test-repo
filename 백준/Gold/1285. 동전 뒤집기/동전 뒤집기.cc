@@ -3,24 +3,29 @@ using namespace std;
 int n, a[24], ret = 987654321;
 string s;
 
+void cal()
+{
+    int sum = 0;
+    for (int i = 1; i < (1 << n); i *= 2)
+    {
+        int cnt = 0;
+        for (int j = 0; j < n; j++)
+        {
+            if (a[j] & i)
+            {
+                cnt++;
+            }
+        }
+        sum += min(cnt, n - cnt);
+    }
+    ret = min(ret, sum);
+}
+
 void go(int cur)
 {
     if (cur == n)
     {
-        int sum = 0;
-        for (int i = 1; i < (1 << n); i *= 2)
-        {
-            int cnt = 0;
-            for (int j = 0; j < n; j++)
-            {
-                if (a[j] & i)
-                {
-                    cnt++;
-                }
-            }
-            sum += min(cnt, n - cnt);
-        }
-        ret = min(ret, sum);
+        cal();
         return;
     }
     go(cur + 1);
