@@ -24,9 +24,8 @@ int go(int idx, int m, int cnt)
     {
         return count(m);
     }
-
     int ret = go(idx + 1, m | (1 << idx), cnt + 1);
-    if (idx != 'a' - 'a' && idx != 'c' - 'a' && idx != 'n' - 'a' && idx != 't' - 'a' && idx != 'i' - 'a')
+    if (idx != 'a' - 'a' && idx != 'n' - 'a' && idx != 't' - 'a' && idx != 'i' - 'a' && idx != 'c' - 'a')
     {
         ret = max(ret, go(idx + 1, m, cnt));
     }
@@ -34,6 +33,7 @@ int go(int idx, int m, int cnt)
 }
 int main()
 {
+
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
@@ -47,7 +47,6 @@ int main()
             a[i] |= (1 << (c - 'a'));
         }
     }
-
     cout << go(0, 0, 0) << "\n";
 
     return 0;
