@@ -1,24 +1,22 @@
-#include <iostream>
-#include <cmath>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-const int FIRST[] = {2, 3, 5, 7};
-const int NEXT[] = {1, 3, 7, 9};
 int n;
+vector<int> v1 = {1, 2, 3, 5, 7, 9};
+vector<int> v2 = {2, 3, 5, 7, 9};
 
 bool check(int num)
 {
+    if (num < 2)
+        return false;
     if (num != 2 && num % 2 == 0)
     {
         return false;
     }
-    for (int i = 3; i <= sqrt(num); i += 2)
+    for (int i = 3; i * i <= num; i += 2)
     {
         if (num % i == 0)
-        {
             return false;
-        }
     }
     return true;
 }
@@ -26,26 +24,30 @@ bool check(int num)
 void go(int idx, int now)
 {
     if (!check(now))
-    {
         return;
-    }
     if (idx == n)
     {
         cout << now << "\n";
         return;
     }
-    for (int i : NEXT)
+
+    for (int vv : v1)
     {
-        go(idx + 1, now * 10 + i);
+        int newNow = now * 10 + vv;
+        if (!check(newNow))
+            continue;
+
+        go(idx + 1, newNow);
     }
+    return;
 }
 
 int main()
 {
     cin >> n;
-    for (int f : FIRST)
+    for (int vv : v2)
     {
-        go(1, f);
+        go(1, vv);
     }
 
     return 0;
