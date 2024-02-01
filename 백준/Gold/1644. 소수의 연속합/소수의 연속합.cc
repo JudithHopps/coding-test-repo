@@ -1,13 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, ret, l, h, sum;
+int n, ret, l, r, sum;
+bool visited[4000004];
 vector<int> v;
 
-bool ch(int i)
+void go(int n)
 {
-    for (int j = 2; j * j <= i; j++)
+    memset(visited, true, sizeof(visited));
+    visited[0] = false, visited[1] = false;
+    for (int i = 2; i * i <= n; i++)
     {
-        if (i % j == 0)
+        if (visited[i])
+        {
+            for (int j = 2; i * j <= n; j++)
+            {
+                visited[i * j] = false;
+            }
+        }
+    }
+}
+bool check(int num)
+{
+    for (int i = 2; i * i <= num; i++)
+    {
+        if (num % i == 0)
             return false;
     }
     return true;
@@ -20,10 +36,13 @@ int main()
     cout.tie(NULL);
 
     cin >> n;
+    go(n);
     for (int i = 2; i <= n; i++)
     {
-        if (ch(i))
+        if (visited[i])
+        {
             v.push_back(i);
+        }
     }
 
     while (true)
@@ -32,18 +51,22 @@ int main()
         {
             sum -= v[l++];
         }
-        else if (h == v.size())
+        else if (r == v.size())
         {
             break;
         }
         else
         {
-            sum += v[h++];
+            sum += v[r++];
         }
+
         if (sum == n)
+        {
             ret++;
+        }
     }
 
     cout << ret << "\n";
+
     return 0;
 }
