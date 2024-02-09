@@ -1,28 +1,34 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <vector>
+#include <string>
+#include <algorithm>
 
-int dp[1005][200];
+using namespace std;
+const int INF = 987654321;
+int dp[1004][54];
 
 int solution(int temperature, int t1, int t2, int a, int b, vector<int> onboard) {
-
-    temperature += 50; t1 += 50; t2 += 50;
-
-    fill(&dp[0][0],&dp[0][0]+1005*200,INT_MAX);
+  
+    int n = onboard.size();
+    t1+=10, t2+=10,temperature+=10;
+    
+    fill(&dp[0][0], &dp[0][0] +1004 *54,INF);
     
     dp[0][temperature] = 0;
-
-    for(int i=0;i<onboard.size();i++) {
-        for(int j=10;j<=100;j++) {
-            if(onboard[i] && (j < t1 || t2 < j)) continue;
-            if(dp[i][j] >= 1e9) continue;
-            dp[i+1][j+1] = min(dp[i+1][j+1], dp[i][j] + (temperature > j ? 0 : a));
-            dp[i+1][j] = min(dp[i+1][j], dp[i][j] + (temperature == j? 0 : b));
-            dp[i+1][j-1] = min(dp[i+1][j-1], dp[i][j] + (temperature < j? 0 : a));
+    
+    for(int i=0;i<n;i++){
+        for(int t=0;t<=50;t++){
+            if(onboard[i] &&(t < t1 || t2 < t)) continue;
+            if(dp[i][t] == INF) continue; 
+            dp[i+1][t+1] = min(dp[i+1][t+1], dp[i][t] + (temperature > t ? 0 : a));
+            dp[i+1][t]   = min(dp[i+1][t], dp[i][t] + (temperature == t? 0 : b));
+            dp[i+1][t-1] = min(dp[i+1][t-1] , dp[i][t] + (temperature < t ? 0 : a));
         }
     }
-
-    int answer = INT_MAX;
-    for(int i=1;i<=100;i++) answer = min(answer, dp[onboard.size()][i]);
-
-    return answer;
+    int ret = INF;
+    for(int t=0;t<=50;t++){
+        ret = min(ret, dp[n][t]);
+    }
+    
+    
+    return ret;
 }
