@@ -2,9 +2,9 @@
 using namespace std;
 int t;
 string str;
+
 int main()
 {
-
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
@@ -21,30 +21,21 @@ int main()
         {
             if (c == '<')
             {
-                // 첫번째인지 확인
-                if (it != a.begin() && !(a.empty()))
+                if (it != a.begin())
                     it--;
             }
-
             else if (c == '>')
             {
-                // 마지막인지 확인
-                if (it != a.end() && !(a.empty()))
+                if (it != a.end())
                     it++;
             }
             else if (c == '-')
             {
-                // 시작점인지 확인
                 if (it != a.begin())
-                {
                     it = a.erase(--it);
-                }
             }
             else
-            {
-                // 입력
                 a.insert(it, c);
-            }
         }
 
         for (char c : a)
@@ -53,5 +44,6 @@ int main()
         }
         cout << "\n";
     }
+
     return 0;
 }
