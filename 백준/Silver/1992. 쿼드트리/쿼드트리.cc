@@ -1,55 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n;
-string str;
-char a[68][68];
+int n, a[70][70];
+string ret;
 
-string quard(int y, int x, int size)
+string go(int y, int x, int size)
 {
-  string ret = "";
-  if (size == 1)
-    return string(1, a[y][x]);
-
-  char b = a[y][x];
-
-  for (int i = y; i < y + size; i++)
-  {
-    for (int j = x; j < x + size; j++)
+    if (size == 1)
     {
-      if (b != a[i][j])
-      {
-        int s = size / 2;
-        ret += "(";
-        ret += quard(y, x, s);
-        ret += quard(y, x + s, s);
-        ret += quard(y + s, x, s);
-        ret += quard(y + s, x + s, s);
-        ret += ")";
-        return ret;
-      }
+        return to_string(a[y][x]);
     }
-  }
-  ret += a[y][x];
-  return ret;
-}
 
+    int now = a[y][x];
+    bool flag = true;
+
+    for (int i = y; i < y + size; i++)
+    {
+        for (int j = x; j < x + size; j++)
+        {
+            if (a[i][j] != now)
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (!flag)
+            break;
+    }
+
+    if (flag)
+        return to_string(a[y][x]);
+
+    int newSize = size / 2;
+    string ret = "";
+    ret += "(";
+    ret += go(y, x, newSize);
+    ret += go(y, x + newSize, newSize);
+    ret += go(y + newSize, x, newSize);
+    ret += go(y + newSize, x + newSize, newSize);
+    ret += ")";
+    return ret;
+}
 int main()
 {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
+    scanf("%d", &n);
 
-  cin >> n;
-  for (int i = 0; i < n; i++)
-  {
-    cin >> str;
-    for (int j = 0; j < n; j++)
+    for (int i = 0; i < n; i++)
     {
-      a[i][j] = str[j];
+        for (int j = 0; j < n; j++)
+        {
+            scanf("%1d", &a[i][j]);
+        }
     }
-  }
 
-  cout << quard(0, 0, n) << "\n";
-
-  return 0;
+    cout << go(0, 0, n) << "\n";
+    return 0;
 }
