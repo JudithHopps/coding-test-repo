@@ -5,6 +5,7 @@ public class Main {
     static int n;
     static int[][] a = new int[104][104];
     static int[][] visited = new int[104][104];
+    static int[][] V = new int[104][104];
     static int ret1, ret2;
     static ArrayList<Pair<Integer, Integer>> v = new ArrayList<>();
     static final int[] dy = {0, 0, -1, 1};
@@ -23,25 +24,39 @@ public class Main {
         }
     }
 
-    static int go() {
+    static void dfs2(boolean flag, int y, int x) {
+        V[y][x] = 1;
+        for (int i = 0; i < 4; i++) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if (ny < 0 || nx < 0 || ny >= n || nx >= n)
+                continue;
+            if ((a[ny][nx] == 3) != flag)
+                continue;
+            if (V[ny][nx] == 1)
+                continue;
+            dfs2(flag, ny, nx);
+        }
+    }
+
+    static void go() {
         for (int i = 0; i < 104; i++) {
             Arrays.fill(visited[i], 0);
+            Arrays.fill(V[i], 0);
         }
-        int cnt = 0;
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (visited[i][j] == 0) {
                     dfs(a[i][j], i, j);
-                    cnt++;
+                    ret1++;
+                }
+
+                if (V[i][j] == 0) {
+                    dfs2(a[i][j] == 3, i, j);
+                    ret2++;
                 }
             }
-        }
-        return cnt;
-    }
-
-    static void change() {
-        for (Pair<Integer, Integer> it : v) {
-            a[it.first][it.second] = 1;
         }
     }
 
@@ -63,11 +78,7 @@ public class Main {
             }
         }
 
-        ret1 = go();
-
-        change();
-
-        ret2 = go();
+        go();
 
         System.out.println(ret1 + " " + ret2);
     }
