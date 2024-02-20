@@ -1,7 +1,7 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    static String str;
     static int n;
     static int[][] a = new int[104][104];
     static int[][] visited = new int[104][104];
@@ -60,12 +60,12 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = scanner.nextInt();
+        n = Integer.parseInt(br.readLine());
         for (int i = 0; i < n; i++) {
-            str = scanner.next();
+            String str = br.readLine();
             for (int j = 0; j < n; j++) {
                 if (str.charAt(j) == 'R')
                     a[i][j] = 1;
