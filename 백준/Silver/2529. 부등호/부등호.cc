@@ -2,34 +2,31 @@
 using namespace std;
 int n;
 char a[10];
-vector<string> ret;
+vector<string> v;
 
-void go(int idx, string s, int visited)
+void go(int idx, int visited, string str)
 {
     if (idx == n)
     {
-        ret.push_back(s);
+        v.push_back(str);
         return;
     }
-    char before = s[idx] - '0';
-
+    int s, e;
     if (a[idx] == '<')
     {
-        for (int i = before + 1; i < 10; i++)
-        {
-            if (visited & (1 << i))
-                continue;
-            go(idx + 1, s + to_string(i), visited | (1 << i));
-        }
+        s = str.back() - '0' + 1;
+        e = 10;
     }
     else
     {
-        for (int i = 0; i < before; i++)
-        {
-            if (visited & (1 << i))
-                continue;
-            go(idx + 1, s + to_string(i), visited | (1 << i));
-        }
+        s = 0;
+        e = str.back() - '0';
+    }
+    for (int i = s; i < e; i++)
+    {
+        if (visited & (1 << i))
+            continue;
+        go(idx + 1, visited | (1 << i), str + to_string(i));
     }
     return;
 }
@@ -41,19 +38,16 @@ int main()
 
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
         cin >> a[i];
-    }
 
     for (int i = 0; i < 10; i++)
     {
-        go(0, to_string(i), 1 << (i));
+        go(0, (1 << i), to_string(i));
     }
-    sort(ret.begin(), ret.end());
 
-    cout
-        << ret[ret.size() - 1] << "\n"
-        << ret[0] << "\n";
+    sort(v.begin(), v.end());
 
+    cout << v[v.size() - 1] << "\n"
+         << v[0] << "\n";
     return 0;
 }
