@@ -1,43 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<int> ret[14];
-int n, a[1030];
+int k, a[(1 << 10) + 4];
+vector<int> tree[14];
 
-void go(int s, int e, int level)
+void go(int l, int r, int h)
 {
-  if (s > e)
-    return;
-  if (s == e)
-  {
-    ret[level].push_back(a[s]);
-    return;
-  }
-  int mid = (s + e) / 2;
-  ret[level].push_back(a[mid]);
-  go(s, mid - 1, level + 1);
-  go(mid + 1, e, level + 1);
-  return;
-}
 
+    int mid = (l + r) / 2;
+    tree[h].push_back(a[mid]);
+    if (l == r)
+        return;
+    go(l, mid - 1, h + 1);
+    go(mid + 1, r, h + 1);
+    return;
+}
 int main()
 {
-  cin >> n;
-  int end = (int)pow(2, n) - 1;
-  for (int i = 0; i < end; i++)
-  {
-    cin >> a[i];
-  }
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-  go(0, end, 1);
-
-  for (int i = 1; i <= n; i++)
-  {
-    for (int j : ret[i])
+    cin >> k;
+    int l = 1, r = (1 << k) - 1;
+    // cout << r << "\n";
+    for (int i = 1; i <= r; i++)
     {
-      cout << j << " ";
-    }
-    cout << "\n";
-  }
 
-  return 0;
+        cin >> a[i];
+        // cout << a[i] << " ";
+    }
+
+    go(l, r, 0);
+
+    for (int i = 0; i < k; i++)
+    {
+        for (int vv : tree[i])
+        {
+            cout << vv << " ";
+        }
+        cout << "\n";
+    }
+
+    return 0;
 }
