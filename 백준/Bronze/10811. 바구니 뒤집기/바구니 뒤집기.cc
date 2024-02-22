@@ -1,32 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
-int n, m, a[104], s, e;
-vector<int> v;
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
+    int basket[101];
+
+    int n, m;
     cin >> n >> m;
 
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        a[i] = i;
+        basket[i] = i + 1;
     }
 
     for (int i = 0; i < m; i++)
     {
-        cin >> s >> e;
-        for (int j = 0; j <= (e - s) / 2; j++)
-        {
-            swap(a[s + j], a[e - j]);
-        }
+        int a, b;
+        cin >> a >> b;
+        reverse(basket + a - 1, basket + b);
     }
 
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        cout << a[i] << " ";
+        cout << basket[i] << ' ';
     }
 
     return 0;
