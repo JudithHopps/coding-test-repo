@@ -1,16 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-int visited[100], r, c, a[24][24], ret;
+int r, c, ret = 0;
+char a[24][24];
 const int dy[] = {0, 0, 1, -1};
 const int dx[] = {1, -1, 0, 0};
 
-void dfs(int y, int x, int cnt)
+int v(int y, int x)
 {
-    if (cnt >= r * c)
-    {
-        ret = cnt;
-        return;
-    }
+    return a[y][x] - 'A';
+}
+void go(int y, int x, int visited, int cnt)
+{
     ret = max(ret, cnt);
 
     for (int i = 0; i < 4; i++)
@@ -19,13 +19,10 @@ void dfs(int y, int x, int cnt)
         int nx = x + dx[i];
         if (ny < 0 || nx < 0 || ny >= r || nx >= c)
             continue;
-        if (visited[a[ny][nx]])
+        if (visited & (1 << v(ny, nx)))
             continue;
-        visited[a[ny][nx]] = 1;
-        dfs(ny, nx, cnt + 1);
-        visited[a[ny][nx]] = 0;
+        go(ny, nx, visited | (1 << v(ny, nx)), cnt + 1);
     }
-    return;
 }
 int main()
 {
@@ -38,14 +35,13 @@ int main()
     {
         for (int j = 0; j < c; j++)
         {
-            char c;
-            cin >> c;
-            a[i][j] = c - 'A';
+            cin >> a[i][j];
         }
     }
-    visited[a[0][0]] = 1;
-    dfs(0, 0, 1);
+
+    go(0, 0, 1 << v(0, 0), 1);
 
     cout << ret << "\n";
+
     return 0;
 }
