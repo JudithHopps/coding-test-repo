@@ -1,94 +1,107 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n, ret = 987654321;
-    static int[] a = new int[14];
-    static ArrayList<Integer>[] adj = new ArrayList[14]; // ArrayList 배열로 변경
-    static int[] parent = new int[14];
-    static boolean[] visited = new boolean[14];
+    static final int INF = 987654321;
+    static int n, ret = INF;
+    static int[] a, visited, parent;
+    static ArrayList<Integer>[] adj;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         n = Integer.parseInt(br.readLine());
-        
-        for (int i = 1; i <= n; i++) {
-            adj[i] = new ArrayList<>(); // ArrayList 초기화
-        }
-        
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= n; i++) {
-            a[i] = Integer.parseInt(st.nextToken());
+        a = new int[n];
+        visited = new int[n];
+        parent = new int[n];
+        adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
         }
 
-        for (int i = 1; i <= n; i++) {
-            adj[i] = new ArrayList<>(); // ArrayList 초기화
-            st = new StringTokenizer(br.readLine());
-            int m = Integer.parseInt(st.nextToken());
+        String[] split = br.readLine().split(" ");
+        for (int i = 0; i < n; i++) {
+            a[i] = Integer.parseInt(split[i]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            split = br.readLine().split(" ");
+            int m = Integer.parseInt(split[0]);
             for (int j = 0; j < m; j++) {
-                int temp = Integer.parseInt(st.nextToken());
-                adj[i].add(temp);
-                adj[temp].add(i); // 양방향 그래프이므로 반대 방향도 추가
+                int b = Integer.parseInt(split[j + 1]) - 1;
+                adj[i].add(b);
+                adj[b].add(i);
             }
         }
 
         for (int i = 1; i < (1 << n) - 1; i++) {
-            for (int j = 1; j <= n; j++) {
-                parent[j] = 0;
-            }
-            for (int j = 1; j <= n; j++) {
-                visited[j] = false;
-            }
             int idx1 = -1, idx2 = -1;
+            init();
             for (int j = 0; j < n; j++) {
                 if ((i & (1 << j)) != 0) {
-                    parent[j + 1] = 1;
-                    idx1 = j + 1;
+                    if (idx1 != -1)
+                        union_group(idx1, j);
+                    idx1 = j;
                 } else {
-                    idx2 = j + 1;
+                    if (idx2 != -1)
+                        union_group(idx2, j);
+                    idx2 = j;
                 }
             }
-
-            MyPair team1 = go(idx1, 1);
-            MyPair team2 = go(idx2, 0);
-
-            if (team1.first + team2.first == n) {
-                ret = Math.min(ret, Math.abs(team1.second - team2.second));
+            Arrays.fill(visited, 0);
+            Pair A = go(idx1, find_root(idx1));
+            Pair B = go(idx2, find_root(idx2));
+            if (A.second + B.second == n) {
+                ret = Math.min(ret, Math.abs(A.first - B.first));
             }
         }
-
-        bw.write((ret == 987654321 ? -1 : ret) + "\n");
-
-        br.close();
-        bw.close();
+        System.out.println(ret == INF ? -1 : ret);
     }
 
-    static class MyPair {
-        int first, second;
+    static void init() {
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
 
-        MyPair(int first, int second) {
+    static int find_root(int node) {
+        if (node == parent[node])
+            return node;
+        parent[node] = find_root(parent[node]);
+        return parent[node];
+    }
+
+    static void union_group(int A, int B) {
+        int rootA = find_root(A);
+        int rootB = find_root(B);
+        if (rootA == rootB)
+            return;
+        parent[rootB] = rootA;
+    }
+
+    static Pair go(int idx, int val) {
+        visited[idx] = 1;
+        Pair temp = new Pair(a[idx], 1);
+
+        for (int vv : adj[idx]) {
+            if (visited[vv] != 0)
+                continue;
+            if (parent[vv] != val)
+                continue;
+            Pair now = go(vv, val);
+            temp.first += now.first;
+            temp.second += now.second;
+        }
+
+        return temp;
+    }
+
+    static class Pair {
+        int first;
+        int second;
+
+        Pair(int first, int second) {
             this.first = first;
             this.second = second;
         }
-    }
-
-    static MyPair go(int here, int value) {
-        int[] ret = {1, a[here]};
-        visited[here] = true;
-        for (int there : adj[here]) {
-            if (!visited[there] && parent[there] == value) {
-                MyPair temp = go(there, value);
-                ret[0] += temp.first;
-                ret[1] += temp.second;
-            }
-        }
-        return new MyPair(ret[0], ret[1]);
     }
 }
