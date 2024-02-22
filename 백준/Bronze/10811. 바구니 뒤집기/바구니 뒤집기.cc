@@ -14,19 +14,19 @@ int main()
     int n, m;
     cin >> n >> m;
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        basket[i] = i + 1;
+        basket[i] = i;
     }
 
     for (int i = 0; i < m; i++)
     {
         int a, b;
         cin >> a >> b;
-        reverse(basket + a - 1, basket + b);
+        reverse(basket + a, basket + b + 1);
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
         cout << basket[i] << ' ';
     }
