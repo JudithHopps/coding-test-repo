@@ -72,11 +72,10 @@ int main()
   }
 
   int ret = a[0][0];
-
-  for (int k : v)
-  {
-    if (d >= b[0][k] + b[k][0])
-      ret = max(ret, a[k / 100][k % 100]);
+  for(int vv : v){
+      if(d >= b[0][vv] + b[vv][0]){
+          ret = max(ret,a[vv/100][vv%100]);
+      }
   }
   cout << ret << "\n";
 
