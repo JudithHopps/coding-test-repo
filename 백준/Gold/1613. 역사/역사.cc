@@ -20,13 +20,9 @@ int main()
     {
       for (int j = 1; j <= n; j++)
       {
-        if (dist[i][k] == 1 && dist[k][j] == 1)
+        if (dist[i][k] && dist[i][k] ==  dist[k][j])
         {
-          dist[i][j] = 1;
-        }
-        if (dist[i][k] == -1 && dist[k][j] == -1)
-        {
-          dist[i][j] = -1;
+          dist[i][j] = dist[i][k];
         }
       }
     }
