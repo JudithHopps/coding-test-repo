@@ -3,11 +3,10 @@
 using namespace std;
 typedef long long ll;
 ll n;
-const int Mx_m = 1e6;
 const int MOD = 1000000;
-const int P = 15 * (Mx_m/10);
+const int P = 15 * (MOD /10);
 int dp[P+4];
-// 주기는 15*10^(n-1)
+// 주기는 15*(MOD/10)
 int f(int n) {
 	if (n <= 1) return n;
 	if (dp[n]) return dp[n];
