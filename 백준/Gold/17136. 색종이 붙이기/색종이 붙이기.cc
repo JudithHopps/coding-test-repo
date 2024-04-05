@@ -1,6 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -58,11 +55,6 @@ void go(int y, int x, int use) {
 
 int main()
 {
-	//freopen("색종이.txt", "r", stdin);
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			cin >> a[i][j];
@@ -73,8 +65,7 @@ int main()
 		}
 	}
 
-	go(0,0, 0);
-
+	go(sy,sx, 0);
 
 	cout << (ret==INF? -1 : ret) << "\n";
 	return 0;
