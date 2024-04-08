@@ -35,7 +35,7 @@ string go(string s){
     }
     
     string a = s.substr(0,idx+1);
-    string b = s.substr(idx+1, s.size()- (idx+1));
+    string b = s.substr(idx+1);
     
     if(ch(a)){
         return a + go(b);
