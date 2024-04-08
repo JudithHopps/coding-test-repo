@@ -3,47 +3,56 @@
 
 using namespace std;
 
-void rot(vector<vector<int>> & key,int m){
-    vector<vector<int>> temp(m, vector<int>(m, 0));
-
-    for(int i=0;i<m;i++){
-        for(int j=0;j<m;j++){
-            temp[i][j] = key[m-j-1][i];
-        }
-    }
-    key = temp;
-    return;
-}
 bool solution(vector<vector<int>> key, vector<vector<int>> lock) {
-    int m = key.size(), n = lock.size() , cnt =0;
-    int holl = 0;
+    bool answer = false;
+    int n = lock.size();
+    int m = key.size();
+    vector<pair<int,int>> needs;
     for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(lock[i][j] ==0) holl++;
-        }
-    }
-    for(int k=0;k<4;k++){
-        for(int i=-19;i<=19;i++){
-            for(int j=-19;j<=19;j++){
-                
-                int cnt = 0, flag =0;
-                for(int y = 0; y<m;y++){
-                    for(int x = 0;x<m;x++){
-                        int ny = y + i;
-                        int nx = x + j;
-                        if(ny<0||nx<0||ny>=n||nx>=n) continue;
-                        if(lock[ny][nx] == 1 && key[y][x] == 1) {
-                            flag = 1;
-                            break;
-                        }
-                        else if(lock[ny][nx] == 0 && key[y][x] == 1) cnt++;
-                    }
-                    if(flag) break;
+            for(int j=0;j<n;j++){
+                if(lock[i][j]==0){
+                    needs.push_back({i,j});
                 }
-                if(cnt==holl && !flag ) return true;
+            }
+   }
+    
+    // 4번 회전 X 20 * 20 
+    for(int k=0; k<4; k++){
+        vector<pair<int,int>> have;
+        vector<vector<int>> temp = key; 
+        for(int i=0;i<m;i++){
+            for(int j=0;j<m;j++){
+                temp[i][j] = key[j][m-i-1];
             }
         }
-        rot(key,m);
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<m;j++){
+                if(temp[i][j]==1) {
+                    have.push_back({i,j});
+                }
+            }
+        }
+        
+        key = temp;
+        
+        for(int i=-n;i<=n;i++){
+            for(int j=-n;j<=n;j++){
+                int sy = i, sx = j,cnt = 0;
+                bool flag = true;
+                for(auto it : have){
+                    int ny = it.first + sy;
+                    int nx = it.second + sx;
+                    if(ny<0||nx<0||ny>=n||nx>=n) continue;
+                    if(lock[ny][nx]){
+                        flag = false; break;
+                    }
+                    cnt++;
+                }
+                if(flag && cnt == needs.size()) return true;
+            }
+        }
     }
-    return false;
+    
+    return answer;
 }
