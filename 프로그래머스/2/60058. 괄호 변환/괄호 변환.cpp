@@ -1,41 +1,56 @@
-#include <bits/stdc++.h> 
+#include <string>
+#include <vector>
+
 using namespace std;
 
-bool check(string a){ 
-    int cnt = 0; 
-    for(int i = 0; i < a.size(); i++){
-        if(a[i] == '(') cnt++; 
-        else cnt--; 
-        if(cnt < 0) return false; 
+bool ch(string s){
+    int l=0;
+    for(char c : s){
+         if(c=='(') l++;
+         else if(l) l--;
+         else return false;
     }
-    return cnt == 0;
+    return (l > 0 ? false : true);
 }
-string go(string a){
-    if(check(a)) return a;    
-    int i, cnt1 = 0, cnt2 = 0; 
-    for(i = 0; i < a.size(); i++){
-        if(a[i] == '(') cnt1++; 
-        else cnt2++; 
-        if(cnt1 == cnt2) break;
+string convert(string s){
+    string next = "(";
+    for(int i=1;i<s.size()-1;i++){
+         if(s[i]=='(') next += ")";
+         else next += "(";
     }
-    string b = a.substr(0, i + 1); 
-    string c = a.substr(i + 1, a.size() - (i + 1));   
-    if(check(b)){ 
-        return b + go(c); 
-    }else{ 
-        string ret = ""; 
-        ret += '('; 
-        ret += go(c); 
-        ret += ')';  
-        b = b.substr(1, b.size() - 2);  
-        for(int i = 0; i < b.size(); i++){
-            if(b[i] == ')') ret += '(';
-            else ret += ')';
-        }   
-        return ret; 
-    }  
+    next += ")";
+    return next;
+}
+string go(string s){
+    if(ch(s)) return s;
+    
+    int l=0,r=0, idx =0;
+    
+     for(;idx<s.size();idx++){
+         char c= s[idx];
+        if(c=='(') l++;
+        else r++;
+         
+        if(l==r) break;
+    }
+    
+    string a = s.substr(0,idx+1);
+    string b = s.substr(idx+1, s.size()- (idx+1));
+    
+    if(ch(a)){
+        return a + go(b);
+    } else {
+        string ret = "(";
+        ret += go(b);
+        ret += ")";
+        for(int i=1;i<a.size()-1;i++){
+             if(a[i]=='(') ret += ")";
+             else ret += "(";
+        }
+        return ret;
+    }
 }
 string solution(string p) {
-    string answer = go(p); 
-    return answer;
+   return go(p);
+   
 }
