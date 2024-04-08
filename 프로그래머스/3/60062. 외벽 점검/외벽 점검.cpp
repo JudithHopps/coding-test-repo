@@ -1,38 +1,44 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-const int INF = 987654321;
 
-vector<int> changeStartIdx(vector<int> weak, int start,int n){
-    if(start ==0) return weak;
-    
-    vector<int> temp;
-    for(int i=start;i<weak.size();i++) temp.push_back(weak[i]);
-    for(int i=0;i<start;i++) temp.push_back(weak[i] + n);
-    
-    return temp;
-}
-int solution(int n, vector<int> weak, vector<int> dist) {
-    int ret = INF;
-    sort(dist.begin(),dist.end());
-    
-    do{
-        for(int j=0;j<weak.size();j++){
-            vector<int> Weak = changeStartIdx(weak,j,n);
-            int idx = 0, flag = 0;
-            int curr = Weak[0] + dist[idx];
-            for(int i=1;i<Weak.size();i++){
-                if(Weak[i] > curr){
-                    if(idx +1 == dist.size()){
-                        flag = 1; break;
-                    }
-                    curr = Weak[i] + dist[++idx];
-                }
-            }
-            if(!flag) ret = min(ret,idx+1);
+int dp[8][1 << 16];
+const int INF = 987654321;
+vector<int> w, d;
+int N,ret;
+
+int go(int idx, int visited) {
+    if (visited == (1 << w.size()) - 1) return 0;
+    if (idx == d.size()) return INF;
+
+    int& ret = dp[idx][visited];
+    if (ret != -1) return ret;
+    ret = INF;
+
+    for(int i=0;i<w.size();i++){
+        if ((visited & 1 << i)) continue;
+        int temp = visited;
+        for(int j=0;j<w.size();j++) {
+            int diff = (w[j] - w[i] + N) % N;
+            if (diff <= d[idx])
+                temp |= 1 << j;
         }
-        
-        
-    } while(next_permutation(dist.begin(),dist.end()));
-    return (ret==INF ? -1 : ret);
+        ret = min(ret, go(idx + 1, temp) + 1);
+    }
+    
+
+    return ret;
+}
+
+
+int solution(int n, vector<int> weak, vector<int> dist) {
+    w = weak;
+    d = dist;
+    N = n;
+
+    sort(d.rbegin(), d.rend());
+    memset(dp, -1, sizeof(dp));
+
+    ret = go(0, 0);
+
+    return (ret==INF ? -1 : ret) ;
 }
