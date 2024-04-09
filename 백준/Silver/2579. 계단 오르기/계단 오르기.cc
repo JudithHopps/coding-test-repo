@@ -2,7 +2,7 @@
 #include<algorithm>
 using namespace std;
 
-int score[301];
+int dp[301];
 int stair[301];
 int main(void)
 {
@@ -11,16 +11,15 @@ int main(void)
 	for (int i = 1; i <= n; i++)
 		cin >> stair[i];
 
-	score[1] = stair[1];
-	score[2] = stair[1] + stair[2];
-	score[3] = max(stair[1] + stair[3], stair[2] + stair[3]);
+	dp[1] = stair[1];
+	dp[2] = stair[1] + stair[2];
 
 	for (int i = 3; i <= n; i++)
 	{
-		int a = score[i - 2] + stair[i];
-		int b = score[i - 3] + stair[i - 1] + stair[i];
-		score[i] = max(a, b);
+		int a = dp[i - 2];
+		int b = dp[i - 3] + stair[i - 1] ;
+		dp[i] = max(a, b) + stair[i];
 	}
-	cout << score[n];
+	cout << dp[n]<<"\n";
 	return 0;
 }
