@@ -1,16 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <cmath>
+
 using namespace std;
+vector<int> ST; 
+int N,W;
+int go(int idx){
+    if(idx >= N+1) return 0;
+    
+    bool flag = false;
+    
+    for(int st : ST){
+        if (idx>= st-W && idx <= st + W ){
+            idx = st;
+            flag = true;
+            break;
+        }
+    }
+    
+    if(flag) return go(idx+W+1);
+    
+    else return go(idx+2*W+1) + 1; 
+    
+}
+
 int solution(int n, vector<int> stations, int w)
 {
-  int prev = 0;
-  int ret = 0;
-  for (int station : stations)
-  {
-    int a = (station - w - 1) - prev;
-    int b = (int)ceil((double)a / (double)(w * 2 + 1));
-    ret += b;
-    prev = station + w;
-  }
-  ret += (int)ceil((double)(n - prev) / (double)(w * 2 + 1));
-  return ret;
+    N = n;
+    ST =  stations;
+    W = w;
+    
+    return go(1);
 }
