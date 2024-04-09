@@ -30,11 +30,9 @@ int main()
 
   while (N)
   {
-    ret += mp[(N % (b * 1LL))];
+    ret = mp[(N % (b * 1LL))] + ret;
     N /= (b * 1LL);
   }
-
-  reverse(ret.begin(), ret.end());
 
   cout << ret << "\n";
   return 0;
