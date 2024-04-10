@@ -9,17 +9,10 @@ int main()
 
   cin >> a >> b >> v;
 
-  if (a >= v)
-    cout << 1 << "\n";
-  else
-  {
-    ret++;
-    v -= a;
-
-    ret += ceil((double)v / (double)(a - b));
-
-    cout << ret << "\n";
-  }
+  ret++;
+  v -= a;
+  ret += ceil((double)v / (double)(a - b));
+  cout << ret << "\n";
 
   return 0;
 }
