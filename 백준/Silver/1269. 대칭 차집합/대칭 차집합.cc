@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-ll n, m, t;
-
+int n, m, a, ret;
+vector<int> v;
 int main()
 {
   ios_base::sync_with_stdio(false);
@@ -10,28 +9,29 @@ int main()
   cout.tie(NULL);
 
   cin >> n >> m;
-  vector<int> a(n + m), b(m);
-  for (int i = 0; i < n+m; i++)
-  {
-    cin >> a[i];
-  }
-  sort(a.begin(), a.end());
+  v.resize(n + m);
 
-  int cnt = 0;
-  for (int i = 0; i < a.size(); i++)
+  for (int i = 0; i < n + m; i++)
   {
-    if (i == a.size() - 1)
-      cnt++;
-    if (i < a.size() - 1 && a[i] != a[i + 1])
+    cin >> a;
+    v[i] = a;
+  }
+
+  sort(v.begin(), v.end());
+
+  // 1 2 2 3 4 4 5 6
+  for (int i = 0; i < v.size(); i++)
+  {
+    if (i == v.size() - 1)
+      ret++;
+    if (i != v.size() - 1 && v[i] != v[i + 1])
     {
-      cnt++;
+      ret++;
     }
     else
-    {
       i++;
-    }
   }
-  cout << cnt << "\n";
 
+  cout << ret << "\n";
   return 0;
 }
