@@ -11,13 +11,9 @@ int main()
 
   cin >> n >> m;
   vector<int> a(n + m), b(m);
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < n+m; i++)
   {
     cin >> a[i];
-  }
-  for (int i = 0; i < m; i++)
-  {
-    cin >> a[n + i];
   }
   sort(a.begin(), a.end());
 
