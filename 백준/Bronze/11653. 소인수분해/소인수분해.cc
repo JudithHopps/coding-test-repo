@@ -29,7 +29,6 @@ int main()
 	cin >> n;
 	if (n == 1) return 0;
 
-	era();
 	for (int i = 2; i <= n; i++) {
 		
 		while (n%i == 0) {
