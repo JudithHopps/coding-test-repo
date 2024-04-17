@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-int ret, n;
+int n, ret;
 struct Board
 {
   int a[24][24];
-  void _rotate90()
+
+  void rotate90()
   {
     int temp[24][24];
     for (int i = 0; i < n; i++)
@@ -15,28 +16,37 @@ struct Board
       }
     }
     memcpy(a, temp, sizeof(a));
+    return;
   }
-  void _move()
+
+  void move()
   {
     int temp[24][24];
+    memset(temp,0,sizeof(temp));
     for (int i = 0; i < n; i++)
     {
-      int c = -1, d = 0;
+      int c = -1, ch = 0;
       for (int j = 0; j < n; j++)
       {
         if (a[i][j] == 0)
           continue;
-        if (d && a[i][j] == temp[i][c])
-          temp[i][c] *= 2, d = 0;
+        if (ch && temp[i][c] == a[i][j])
+        {
+          temp[i][c] *= 2;
+          ch = 0;
+        }
         else
-          temp[i][++c] = a[i][j], d = 1;
+        {
+          temp[i][++c] = a[i][j];
+          ch = 1;
+        }
       }
-      for (c++; c < n; c++)
-        temp[i][c] = 0;
+    
     }
     memcpy(a, temp, sizeof(a));
   }
-  void get_max()
+
+  void getMax()
   {
     for (int i = 0; i < n; i++)
     {
@@ -47,19 +57,20 @@ struct Board
     }
   }
 };
-void go(Board c, int here)
+
+void dfs(Board b, int cnt)
 {
-  if (here == 5)
+  if (cnt == 5)
   {
-    c.get_max();
+    b.getMax();
     return;
   }
   for (int i = 0; i < 4; i++)
   {
-    Board d = c;
-    d._move();
-    go(d, here + 1);
-    c._rotate90();
+    Board d = b;
+    d.move();
+    dfs(d, cnt + 1);
+    b.rotate90();
   }
   return;
 }
@@ -69,15 +80,17 @@ int main()
   cin.tie(NULL);
   cout.tie(NULL);
   cin >> n;
-  Board c;
+  Board b;
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
     {
-      cin >> c.a[i][j];
+      cin >> b.a[i][j];
     }
   }
-  go(c, 0);
+
+  dfs(b, 0);
   cout << ret << "\n";
+
   return 0;
 }
