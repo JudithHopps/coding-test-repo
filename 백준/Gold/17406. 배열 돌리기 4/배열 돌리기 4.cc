@@ -1,115 +1,103 @@
-#include <bits/stdc++.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <algorithm>
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <cstring>
 using namespace std;
-const int INF = 987654321;
-int n, m, k, a[54][54], b[54][54], r, c, s, sy, sx, ey, ex, dir, ret = INF;
-const int dy[] = {0, 1, 0, -1}, dx[] = {1, 0, -1, 0};
-int visited[54][54];
-struct A
-{
-    int r, c, s;
-};
-vector<A> rot;
-vector<int> idx, v;
 vector<pair<int, int>> pairV;
+vector<int> v;
+vector<int> idx;
+int ret=987654321, n, m, k, a[54][54],b[54][54], r[10], c[10], s[10],d,sy,sx,ey,ex,visited[54][54];
+const int dy[] = { 0,1,0,-1 };
+const int dx[] = { 1,0,-1,0 };
 
-void go(int y, int x)
-{
-    if (y == sy && x == ex)
-        dir++;
-    if (y == ey && x == ex)
-        dir++;
-    if (y == ey && x == sx)
-        dir++;
-
-    int ny = y + dy[dir];
-    int nx = x + dx[dir];
-    if (visited[ny][nx])
-        return;
-    visited[ny][nx] = 1;
-    pairV.push_back({ny, nx});
-    v.push_back(b[ny][nx]);
-    go(ny, nx);
-    return;
+void getMax() {
+	for (int i = 0; i < n; i++) {
+		int sum = 0;
+		for (int j = 0; j < m; j++) {
+			sum += a[i][j];
+		}
+		ret = min(ret, sum);
+	}
 }
-void rotateAll(int r, int c, int s)
-{
-    for (int i = 1; i <= s; i++)
-    {
-        memset(visited, 0, sizeof(visited));
-        pairV.clear();
-        v.clear();
-        dir = 0;
+void print() {
+	for (int i = 0; i < n; i++) {
 
-        sy = r - i;
-        sx = c - i;
-        ey = r + i;
-        ex = c + i;
-
-        visited[sy][sx] = 1;
-        pairV.push_back({sy, sx});
-        v.push_back(b[sy][sx]);
-
-        go(sy, sx);
-
-        // for (auto it : pairV)
-        // {
-        //     v.push_back(b[it.first][it.second]);
-        // }
-
-        rotate(v.begin(), v.end() - 1, v.end());
-
-        for (int i = 0; i < v.size(); i++)
-        {
-            b[pairV[i].first][pairV[i].second] = v[i];
-        }
-    }
-    return;
+		for (int j = 0; j < m; j++) {
+			cout << a[i][j] << " ";
+		}
+		cout << "\n";
+	}
 }
-void solve()
-{
-    for (int i : idx)
-    {
-        rotateAll(rot[i].r, rot[i].c, rot[i].s);
-    }
-    for (int i = 0; i < n; i++)
-    {
-        int sum = 0;
-        for (int j = 0; j < m; j++)
-        {
-            sum += b[i][j];
-        }
-        ret = min(sum, ret);
-    }
+void dfs(int y, int x) {
+	pairV.push_back({ y,x });
+	v.push_back(a[y][x]);
+	visited[y][x] = 1;
+
+
+	if (y == sy && x == ex) d++;
+	if (y == ey && x == ex) d++;
+	if (y == ey && x == sx) d++;
+
+	int ny = y + dy[d];
+	int nx = x + dx[d];
+
+	if (visited[ny][nx]) return;
+	dfs(ny, nx);
+}
+void rot(int y, int x, int s) {
+	for (int i = 1; i <= s; i++) {
+		memset(visited, 0, sizeof(visited));
+		sy = y - i;	ey = y +i;
+		sx = x - i; ex = x +i;
+		d = 0; 
+		v.clear();
+		pairV.clear();
+
+		dfs(sy, sx);
+
+		//cout << "\n";
+		rotate(v.begin(), v.end()-1,v.end());
+		for (int i = 0; i < pairV.size();i++) {
+			a[pairV[i].first][pairV[i].second] = v[i];
+		}
+
+		//print();
+	}
+}
+void solve() {
+	memcpy(a,b, sizeof(a));
+
+	for (int i : idx) {
+		rot(r[i] - 1, c[i] - 1, s[i]);
+	}
+	getMax();
 }
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	//freopen("data.txt", "r", stdin);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    cin >> n >> m >> k;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> a[i][j];
-        }
-    }
-    for (int i = 0; i < k; i++)
-    {
-        cin >> r >> c >> s;
-        r--, c--;
-        rot.push_back({r, c, s});
-        idx.push_back(i);
-    }
 
-    do
-    {
-        memcpy(b, a, sizeof(b));
-        solve();
-    } while (next_permutation(idx.begin(), idx.end()));
+	cin >> n >> m >> k;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> b[i][j];
+		}
+	}
+	for (int i = 0; i < k; i++) {
+		idx.push_back(i);
+		cin >> r[i] >> c[i] >> s[i];
+	}
+	
+	do {
+		solve();
+	} while (next_permutation(idx.begin(), idx.end()));
 
-    cout << ret << "\n";
+	cout << ret << "\n";
 
-    return 0;
+	return 0;
 }
