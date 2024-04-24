@@ -37,8 +37,9 @@ vector<int> solution(vector<string> grid) {
     for(int i=0;i<n;i++){
         for(int j=0;j<m;j++){
             for(int d=0;d<4;d++){
+                if(visited[i][j][d]) continue;
                 int ret = go(i,j,d,0);
-                if(ret) answer.push_back(ret);
+                answer.push_back(ret);
             }
         }
     }
