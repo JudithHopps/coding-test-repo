@@ -1,39 +1,47 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 using namespace std;
-int d[101];
 
-int getParent(int node){
-    if(node == d[node]){
-        return node;
+const int INF = 10000;
+int parent[104]; 
+
+void init(int n){
+    for(int i=0;i<n;i++){
+        parent[i] = i;
     }
-    else return d[node] = getParent(d[node]);
 }
 
-bool compare(vector<int> a, vector<int> b){
+int find(int node){
+    if(parent[node] == node ) return node;
+    return parent[node] = find(parent[node]);
+}
+
+int uni(int a, int b,int d){
+    if(find(a) == find(b)) return 0;
+    parent[find(b)] = find(a);
+    return d; 
+}
+bool cmp(vector<int> a, vector<int> b){
     return a[2] < b[2];
 }
-
 int solution(int n, vector<vector<int>> costs) {
-
-    int answer = 0;
-    for(int i =0; i<n; i++){
-        d[i] = i;
-    }
-    sort(costs.begin(), costs.end(), compare);
-    for(int i=0; i<costs.size(); i++){
-        int start = getParent(costs[i][0]);
-        int end = getParent(costs[i][1]);
-        int cost = costs[i][2];
-
-        if(start != end){
-            d[end] = start;
-
-            answer += cost;
+    int ret = 0;
+    
+    init(n);
+    sort(costs.begin(),costs.end(),cmp);
+    
+    for(vector<int> it : costs){
+        int s = it[0];
+        int e = it[1];
+        int d = it[2];
+        
+        if(s!= e){
+             ret += uni(s,e,d);
         }
+       
     }
-
-
-    return answer;
+    
+    return ret;
 }
