@@ -1,38 +1,38 @@
 #include <string>
 #include <vector>
-#include <unordered_set>
-
+#include <iostream>
+#include <unordered_set> 
 using namespace std;
+unordered_set<int> us[10];
+int n;
 
-int N;
-unordered_set<int> cache[10];
-unordered_set<int> solve(int n) {
-    if (!cache[n].empty()) return cache[n];
-    int num = 0;
-    for (int i = 0; i < n; i++) num = 10 * num + N;
-    unordered_set<int> res;
-    res.insert(num);
-    for (int i = 1; i < n; i++) {
-        int j = n - i;
-        auto s1 = solve(i);
-        auto s2 = solve(j);
-        for (int n1 : s1) {
-            for (int n2 : s2) {
-                res.insert(n1 + n2);
-                res.insert(n1 - n2);
-                res.insert(n1 * n2);
-                if (n2 != 0) res.insert(n1 / n2);
+int solution(int N, int number) {
+    n = number;
+    int now = 0;
+    
+    for(int i=1;i<=8;i++){
+        now = now*10 + 5;
+        us[i].insert(now);
+
+
+        for(int j=1;j < i;j++){
+                for(int a : us[j]){
+                    for(int b : us[i-j]){
+                        vector<int> temp = {a+b,a-b,a*b};
+                        if(b!= 0) temp.push_back(a/b); 
+
+
+                        for(int t : temp){
+                            us[i].insert(t);
+                        }
+                    }
+                }
             }
-        }
-    }
-    return cache[n] = res;
-}
 
-int solution(int _N, int number) {
-    N = _N;
-    for (int i = 1; i <= 8; i++) {
-        solve(i);
-        if (cache[i].find(number) != cache[i].end()) return i;
+        if(us[i].find(number) != us[i].end()) return i;
     }
+
+
     return -1;
+
 }
